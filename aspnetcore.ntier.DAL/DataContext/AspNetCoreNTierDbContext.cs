@@ -11,9 +11,8 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
 
     public DbSet<User> Users { get; set; }
 
-    public DbSet<Taskk> Tasks { get; set; }
-    public DbSet<Subtask> Subtasks { get; set; }
-    public DbSet<Friend> Friends { get; set; }
+    public DbSet<Stock> Stocks { get; set; }
+    public DbSet<BoardStock> BoardStocks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,36 +23,42 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
              new User
              {
                  Id = 1,
-                 UserName = "user0",
+                 UserName = "user1",
                  Email = "johndoe@gmail.com",
-                 Password = "Zxcv@345",
-                 Name = "John",
+                 Password = "zxc",
+                 Name = "Andrii",
                  Surname = "Doe",
+             },
+             new User
+             {
+                Id = 2,
+                UserName = "user2",
+                Email = "johndoe@gmail.com",
+                Password = "zxc",
+                Name = "Mykola",
+                Surname = "Doe",
              }
          );
 
+        modelBuilder.Entity<BoardStock>().HasData(
+             new BoardStock
+             {
+                 Stock_Id = "1",
+                 UserId = 2,
+                 Symbol = "TEST",
+                 Exchange = "Nasdaq",
+                 Name = "Stock Name",
+                 Cost_Basis = "123",
+                 Qty = "2",
+             }
+ );
 
-        modelBuilder.Entity<IdentityRole>().HasData(
-            new IdentityRole() { Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin" },
-            new IdentityRole() { Name = "User", ConcurrencyStamp = "2", NormalizedName = "User" }
-            );
 
-        modelBuilder.Entity<Subtask>()
-            .HasOne(s => s.Task)
-            .WithMany(t => t.Subtasks)
-            .HasForeignKey(t => t.TaskId)
-            .IsRequired();
-
-        modelBuilder.Entity<Taskk>()
-            .HasOne(t => t.User)
-            .WithMany(u => u.Tasks)
+        modelBuilder.Entity<Stock>()
+            .HasOne(s => s.User)
+            .WithMany(t => t.Stocks)
             .HasForeignKey(t => t.UserId)
             .IsRequired();
 
-        modelBuilder.Entity<Subtask>()
-            .HasOne(t => t.User)
-            .WithMany(u => u.Subtasks)
-            .HasForeignKey(t => t.UserId)
-            .IsRequired();
     }
 }

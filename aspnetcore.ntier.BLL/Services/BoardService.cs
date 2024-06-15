@@ -13,51 +13,50 @@ using System.Security.Claims;
 
 namespace aspnetcore.ntier.BLL.Services
 {
-    public class SubtaskService : ISubtaskService
+    public class BoardService : IBoardService
     {
 
-        private readonly ISubtaskRepository _subtaskRepository;
+        private readonly IBoardRepository _boardRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
 
 
-        public SubtaskService (ISubtaskRepository subtaskRepository, IMapper mapper,  IHttpContextAccessor httpContext)
+        public BoardService (IBoardRepository boardRepository, IMapper mapper,  IHttpContextAccessor httpContext)
         {
-            _subtaskRepository = subtaskRepository;
+            _boardRepository = boardRepository;
             _mapper = mapper;
             _httpContext = httpContext;
         }
 
-        public async Task<List<SubtaskDTO>> GetSubtasksAsync(CancellationToken cancellationToken = default)
+        public async Task<List<BoardStockDTO>> GetBoardAsync(CancellationToken cancellationToken = default)
         {
-            var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var subtasksToReturn = await _subtaskRepository.GetListAsync(Int32.Parse(userId));
-            return _mapper.Map<List<SubtaskDTO>>(subtasksToReturn);
+            var stocksToReturn = await _boardRepository.GetListAsync();
+            return _mapper.Map<List<BoardStockDTO>>(stocksToReturn);
         }
 
-        public async Task<SubtaskDTO> AddSubtaskAsync([FromBody] SubtaskToAddDTO subtaskToAddDTO)
+        public async Task<BoardStockDTO> AddToBoardAsync([FromBody] BoardAddDTO stockToAddDTO)
         {
             var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            subtaskToAddDTO.UserId = Convert.ToInt32(userId);
+            stockToAddDTO.UserId = Convert.ToInt32(userId);
 
-            var addedSubtask = await _subtaskRepository.AddAsync(_mapper.Map<Subtask>(subtaskToAddDTO));
-            return _mapper.Map<SubtaskDTO>(addedSubtask);
+            var addedStock = await _boardRepository.AddAsync(_mapper.Map<BoardStock>(stockToAddDTO));
+            return _mapper.Map<BoardStockDTO>(addedStock);
         }
 
-        public async Task DeleteSubtaskAsync(int taskId)
+        public async Task RemoveFromBoardAsync(int stockId)
         {
-            var taskToDelete = await _subtaskRepository.GetAsync(x => x.Id == taskId);
+            var stockToDelete = await _boardRepository.GetAsync(x => x.Stock_Id == stockId.ToString());
 
-            if (taskToDelete is null)
+            if (stockToDelete is null)
             {
-                Log.Information("Task with taskId = {TaskId} was not found", taskId);
+                Log.Information("Stock with Id {stockId} was not found", stockId);
                 throw new KeyNotFoundException();
             }
 
-            await _subtaskRepository.DeleteAsync(taskToDelete);
+            await _boardRepository.DeleteAsync(stockToDelete);
         }
 
-        public async Task<SubtaskDTO> UpdateStatusSubtaskAsync(int taskId)
+        /*public async Task<SubtaskDTO> UpdateStatusSubtaskAsync(int taskId)
         {
             var task = await _subtaskRepository.GetAsync(x => x.Id == taskId);
             if (task is null)
@@ -75,9 +74,9 @@ namespace aspnetcore.ntier.BLL.Services
             Log.Information("Task with these properties: {@TaskToUpdate} has been updated", task);
 
             return _mapper.Map<SubtaskDTO>(await _subtaskRepository.UpdateStatusTaskAsync(taskToUpdate));
-        }
+        }*/
 
-        public async Task<SubtaskDTO> UpdateSubtaskAsync(SubtaskDTO taskToUpdate)
+        /*public async Task<SubtaskDTO> UpdateSubtaskAsync(SubtaskDTO taskToUpdate)
         {
             var taskBeforeUpdate = await _subtaskRepository.GetAsync(x => x.Id == taskToUpdate.Id);
 
@@ -99,7 +98,7 @@ namespace aspnetcore.ntier.BLL.Services
             Log.Information("Task with these properties: {@TaskToUpdate} has been updated", taskAfterUpdate);
 
             return _mapper.Map<SubtaskDTO>(await _subtaskRepository.UpdateTaskAsync(taskAfterUpdate));
-        }
+        }*/
 
     }
 }

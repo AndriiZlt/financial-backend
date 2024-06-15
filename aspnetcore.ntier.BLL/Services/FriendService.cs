@@ -4,7 +4,6 @@ using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace aspnetcore.ntier.BLL.Services;

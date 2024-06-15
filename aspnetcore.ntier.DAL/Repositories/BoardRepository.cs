@@ -7,40 +7,40 @@ using System.Linq.Expressions;
 
 namespace aspnetcore.ntier.DAL.Repositories
 {
-    public class SubtaskRepository : GenericRepository<Subtask>, ISubtaskRepository
+    public class BoardRepository : GenericRepository<BoardStock>, IBoardRepository
     {
 
         private readonly AspNetCoreNTierDbContext _aspNetCoreNTierDbContext;
-        public SubtaskRepository(AspNetCoreNTierDbContext aspNetCoreNTierDbContext) : base(aspNetCoreNTierDbContext)
+        public BoardRepository(AspNetCoreNTierDbContext aspNetCoreNTierDbContext) : base(aspNetCoreNTierDbContext)
         {
             _aspNetCoreNTierDbContext = aspNetCoreNTierDbContext;
         }
-        public async Task<List<Subtask>> GetListAsync(int userId)
+        public async Task<List<BoardStock>> GetListAsync()
         {
            /* return await _aspNetCoreNTierDbContext.Set<Subtask>().ToListAsync();*/
-            return await _aspNetCoreNTierDbContext.Set<Subtask>().Where(t => t.UserId == userId).ToListAsync();
+            return await _aspNetCoreNTierDbContext.Set<BoardStock>().ToListAsync();
         }
 
-        public async Task<Subtask> GetAsync(Expression<Func<Subtask, bool>> filter = null, CancellationToken cancellationToken = default)
+/*        public async Task<BoardStock> GetAsync(Expression<Func<BoardStock, bool>> filter = null, CancellationToken cancellationToken = default)
         {
             return await _aspNetCoreNTierDbContext.Set<Subtask>().AsNoTracking().FirstOrDefaultAsync(filter, cancellationToken);
-        }
+        }*/
 
-        public async Task<Subtask> AddAsync(Subtask task)
+        public async Task<BoardStock> AddAsync(BoardStock stock)
         {
 
-            await _aspNetCoreNTierDbContext.AddAsync(task);
+            await _aspNetCoreNTierDbContext.AddAsync(stock);
             await _aspNetCoreNTierDbContext.SaveChangesAsync();
-            return task;
+            return stock;
         }
 
-        public async Task<int> DeleteAsync(Subtask task)
+        public async Task<int> DeleteAsync(BoardStock stock)
         {
-            _ = _aspNetCoreNTierDbContext.Remove(task);
+            _ = _aspNetCoreNTierDbContext.Remove(stock);
             return await _aspNetCoreNTierDbContext.SaveChangesAsync();
         }
 
-        public async Task<Subtask> UpdateStatusTaskAsync(Subtask task)
+        /*public async Task<Subtask> UpdateStatusTaskAsync(Subtask task)
         {
             _ = _aspNetCoreNTierDbContext.Update(task);
 
@@ -54,7 +54,7 @@ namespace aspnetcore.ntier.DAL.Repositories
 
             await _aspNetCoreNTierDbContext.SaveChangesAsync();
             return task;
-        }
+        }*/
 
     }
 }

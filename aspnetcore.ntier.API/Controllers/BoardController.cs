@@ -1,5 +1,4 @@
 ﻿
-using aspnetcore.ntier.BLL.Services;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -14,26 +13,26 @@ namespace aspnetcore.ntier.API.Controllers
     [ApiController]
     [Authorize(AuthenticationSchemes = "Bearer")]
 
-    public class SubtaskController : ControllerBase
+    public class BoardController : ControllerBase
     {
 
-        private readonly ISubtaskService _subtaskService;
+        private readonly IBoardService _boardService;
 
-        public SubtaskController(ISubtaskService subtaskService)
+        public BoardController(IBoardService boardService)
         {
-            _subtaskService = subtaskService;
+            _boardService = boardService;
         }
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpGet("getsubtasks")]
-        public async Task<IActionResult> GetTasks()
+        [HttpGet("getboard")]
+        public async Task<IActionResult> GetBoard()
         {
             try
             {
-                var result = await _subtaskService.GetSubtasksAsync();
+                var result = await _boardService.GetBoardAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -47,12 +46,12 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPost("addsubtask")]
-        public async Task<IActionResult> AddTask(SubtaskToAddDTO taskToAddDTO)
+        [HttpPost("addboard")]
+        public async Task<IActionResult> AddStockToBoard(BoardAddDTO stockToAddDTO)
         {
             try
             {
-                return Ok(await _subtaskService.AddSubtaskAsync(taskToAddDTO));
+                return Ok(await _boardService.AddToBoardAsync(stockToAddDTO));
             }
             catch (Exception ex)
             {
@@ -62,7 +61,7 @@ namespace aspnetcore.ntier.API.Controllers
         }
 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpPut("updatestatus")]
@@ -82,10 +81,11 @@ namespace aspnetcore.ntier.API.Controllers
                 Log.Error("An unexpected error occurred in UpdateStatusTask controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }
+        }*/
+       
 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpPut("updatesubtask")]
@@ -105,18 +105,18 @@ namespace aspnetcore.ntier.API.Controllers
                 Log.Error("An unexpected error occurred in UpdateTask controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }
+        }*/
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpDelete("deletesubtask")]
-        public async Task<IActionResult> DeleteTask(int taskId)
+        [HttpDelete("removeboard")]
+        public async Task<IActionResult> R(int stockId)
         {
             try
             {
-                await _subtaskService.DeleteSubtaskAsync(taskId);
+                await _boardService.RemoveFromBoardAsync(stockId);
                 return Ok();
             }
             catch (KeyNotFoundException ex)

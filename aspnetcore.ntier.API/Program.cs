@@ -10,7 +10,6 @@ using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
@@ -27,10 +26,10 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ITaskService, TaskService>();
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddScoped<ISubtaskService, SubtaskService>();
-builder.Services.AddScoped<ISubtaskRepository, SubtaskRepository>();
+builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IFriendService, FriendService>();
 builder.Services.AddScoped<IFriendRepository, FriendRepository>();
 builder.Services.AddScoped<IAlpacaService, AlpacaService>();

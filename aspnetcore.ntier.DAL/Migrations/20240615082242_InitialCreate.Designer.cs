@@ -11,7 +11,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20240428075133_InitialCreate")]
+    [Migration("20240615082242_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,98 +19,78 @@ namespace aspnetcore.ntier.DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.29");
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Friend", b =>
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.BoardStock", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Stock_Id")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("Age")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("DateCreated")
+                    b.Property<string>("Cost_Basis")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Gender")
+                    b.Property<string>("Exchange")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LName")
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Picture")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Friends");
-                });
-
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Subtask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("DateCompleted")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
+                    b.Property<string>("Qty")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TaskId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Symbol")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
+                    b.HasKey("Stock_Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subtasks");
+                    b.ToTable("BoardStocks");
+
+                    b.HasData(
+                        new
+                        {
+                            Stock_Id = "1",
+                            Cost_Basis = "123",
+                            Exchange = "Nasdaq",
+                            Name = "Stock Name",
+                            Qty = "2",
+                            Symbol = "TEST",
+                            UserId = 2
+                        });
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Taskk", b =>
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Stock", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("DateCompleted")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DateCreated")
+                    b.Property<string>("Alpaca_Asset_Id")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("DateDue")
+                    b.Property<string>("Cost_Basis")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Exchange")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Qty")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -118,7 +98,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Symbol")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -129,7 +109,7 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.User", b =>
@@ -139,6 +119,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Ballance")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -203,16 +186,33 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7dea3af8-5960-407b-b63d-2d3082d96332",
+                            Ballance = 0,
+                            ConcurrencyStamp = "6b0f0830-34a3-4fd7-ae21-fd76ff697ad4",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            Name = "John",
-                            Password = "123",
+                            Name = "Andrii",
+                            Password = "zxc",
                             PhoneNumberConfirmed = false,
                             Surname = "Doe",
                             TwoFactorEnabled = false,
-                            UserName = "johndoe"
+                            UserName = "user1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            Ballance = 0,
+                            ConcurrencyStamp = "55de64d2-6488-4578-bdb8-c330802af2b2",
+                            Email = "johndoe@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            Name = "Mykola",
+                            Password = "zxc",
+                            PhoneNumberConfirmed = false,
+                            Surname = "Doe",
+                            TwoFactorEnabled = false,
+                            UserName = "user2"
                         });
                 });
 
@@ -240,22 +240,6 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "ccbc9483-7a78-4329-a84e-1532de889cbf",
-                            ConcurrencyStamp = "1",
-                            Name = "Admin",
-                            NormalizedName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "03c6a3ba-6242-415f-8a06-0be6f1ecc712",
-                            ConcurrencyStamp = "2",
-                            Name = "User",
-                            NormalizedName = "User"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -424,29 +408,21 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Subtask", b =>
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.BoardStock", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.Taskk", "Task")
-                        .WithMany("Subtasks")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("aspnetcore.ntier.DAL.Entities.User", "User")
-                        .WithMany("Subtasks")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Task");
-
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Taskk", b =>
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Stock", b =>
                 {
                     b.HasOne("aspnetcore.ntier.DAL.Entities.User", "User")
-                        .WithMany("Tasks")
+                        .WithMany("Stocks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -505,16 +481,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Taskk", b =>
-                {
-                    b.Navigation("Subtasks");
-                });
-
             modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.User", b =>
                 {
-                    b.Navigation("Subtasks");
-
-                    b.Navigation("Tasks");
+                    b.Navigation("Stocks");
                 });
 #pragma warning restore 612, 618
         }

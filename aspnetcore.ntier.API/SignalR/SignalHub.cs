@@ -60,7 +60,7 @@ namespace aspnetcore.ntier.API
 
         public async Task SendMessage(string targetUserId, string message)
         {
-            /*            Clients.Client(targetUserId).SendAsync("recieveMessage", $"Message:'{message}'.");*/
+/*            Clients.Client(targetUserId).SendAsync("recieveMessage", message);*/
             List<string> targetUserConnections = _connectionService.GetUserConnections(targetUserId);
             var currentConnectionId = Context.ConnectionId;
             var senderId = _connectionService.GetValue(currentConnectionId);

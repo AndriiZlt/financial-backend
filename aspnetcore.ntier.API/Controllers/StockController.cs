@@ -1,5 +1,4 @@
 ﻿
-using aspnetcore.ntier.BLL.Services;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -13,26 +12,26 @@ namespace aspnetcore.ntier.API.Controllers
     [ApiVersion("1")]
     [ApiController]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public class TaskController : ControllerBase
+    public class StockController : ControllerBase
     {
 
-        private readonly ITaskService _taskService;
+        private readonly IStockService _stockService;
 
-        public TaskController(ITaskService taskService)
+        public StockController(IStockService stockService)
         {
-            _taskService = taskService;
+            _stockService = stockService;
         }
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpGet("gettasks")]
-        public async Task<IActionResult> GetTasks()
+        [HttpGet("getstocks")]
+        public async Task<IActionResult> GetStocks()
         {
             try
             {
-                var result = await _taskService.GetTasksAsync();
+                var result = await _stockService.GetStocksAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -46,12 +45,12 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPost("addtask")]
-        public async Task<IActionResult> AddTask(TaskToAddDTO taskToAddDTO)
+        [HttpPost("addstock")]
+        public async Task<IActionResult> AddStock(StockToAddDTO stockToAddDTO)
         {
             try
             {
-                return Ok(await _taskService.AddTaskAsync(taskToAddDTO));
+                return Ok(await _stockService.AddStockAsync(stockToAddDTO));
             }
             catch (Exception ex)
             {
@@ -61,15 +60,15 @@ namespace aspnetcore.ntier.API.Controllers
         }
 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPut("updatestatus/{taskId}")]
+        [HttpPut("updatestatus/{stockId}")]
         public async Task<IActionResult> UpdateStatusTask(int taskId)
         {
             try
             {
-                return Ok(await _taskService.UpdateStatusTaskAsync(taskId));
+                return Ok(await _stockService.UpdateStatusTaskAsync(taskId));
             }
             catch (KeyNotFoundException ex)
             {
@@ -81,10 +80,10 @@ namespace aspnetcore.ntier.API.Controllers
                 Log.Error( "An unexpected error occurred in UpdateStatusTask controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }
+        }*/
 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpPut("updatetask")]
@@ -92,7 +91,7 @@ namespace aspnetcore.ntier.API.Controllers
         {
             try
             {
-                return Ok(await _taskService.UpdateTaskAsync(taskToUpdate));
+*//*                return Ok(await _stockService.UpdateStockAsync(taskToUpdate));*//*
             }
             catch (KeyNotFoundException ex)
             {
@@ -104,18 +103,18 @@ namespace aspnetcore.ntier.API.Controllers
                 Log.Error("An unexpected error occurred in UpdateTasks controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }
+        }*/
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpDelete("deletetask/{taskId}")]
-        public async Task<IActionResult> DeleteTask(int taskId)
+        public async Task<IActionResult> DeleteStock(int taskId)
         {
             try
             {
-                await _taskService.DeleteTaskAsync(taskId);
+                await _stockService.DeleteTaskAsync(taskId);
                 return Ok();
             }
             catch (KeyNotFoundException ex)

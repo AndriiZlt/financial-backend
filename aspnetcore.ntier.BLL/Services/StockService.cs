@@ -5,7 +5,6 @@ using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using System.Security.Claims;
 
@@ -13,47 +12,51 @@ using System.Security.Claims;
 
 namespace aspnetcore.ntier.BLL.Services
 {
-    public class TaskService : ITaskService
+    public class StockService : IStockService
     {
 
-        private readonly ITaskRepository _taskRepository;
+        private readonly IStockRepository _stockRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
 
 
-        public TaskService (
-            ITaskRepository taskRepository, 
+        public StockService (
+            IStockRepository stockRepository, 
             IMapper mapper, 
             IHttpContextAccessor httpContext 
             )
         {
-            _taskRepository = taskRepository;
+            _stockRepository = stockRepository;
             _mapper = mapper;
             _httpContext = httpContext;
 
         }
 
-        public async Task<List<TaskDTO>> GetTasksAsync(CancellationToken cancellationToken = default)
+        public async Task<List<StockDTO>> GetStocksAsync(CancellationToken cancellationToken = default)
         {
             var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var tasksToReturn = await _taskRepository.GetListAsync(Int32.Parse(userId));
-            return _mapper.Map<List<TaskDTO>>(tasksToReturn);
+            var stocksToReturn = await _stockRepository.GetListAsync(Int32.Parse(userId));
+            Log.Information("GetStocksAsync {@stockId}", userId);
+            return _mapper.Map<List<StockDTO>>(stocksToReturn);
         }
 
-        public async Task<TaskDTO> AddTaskAsync([FromBody] TaskToAddDTO taskToAddDTO)
+        public async Task<StockDTO> AddStockAsync([FromBody] StockToAddDTO stockToAddDTO)
         {
-            var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Log.Information("stockToAddDTO {@stockId}", stockToAddDTO);
+/*            var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);*/
+            stockToAddDTO.UserId = Int32.Parse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var stock = _mapper.Map<Stock>(stockToAddDTO);
+            var addedStock = await _stockRepository.AddAsync(_mapper.Map<Stock>(stockToAddDTO));
 
-            var addedTask = await _taskRepository.AddAsync(_mapper.Map<Taskk>(taskToAddDTO));
-
-            return _mapper.Map<TaskDTO>(addedTask);
+            Log.Information("addedStock {@stockId}", addedStock);
+            return _mapper.Map<StockDTO>(addedStock);
         }
 
  
 
         public async Task DeleteTaskAsync(int taskId)
         {
-            var taskToDelete = await _taskRepository.GetAsync(x => x.Id == taskId);
+            var taskToDelete = await _stockRepository.GetAsync(x => x.Id == taskId);
 
             if (taskToDelete is null)
             {
@@ -61,12 +64,12 @@ namespace aspnetcore.ntier.BLL.Services
                 throw new KeyNotFoundException();
             }
 
-            await _taskRepository.DeleteAsync(taskToDelete);
+            await _stockRepository.DeleteAsync(taskToDelete);
         }
 
-        public async Task<TaskDTO> UpdateStatusTaskAsync(int taskId)
+        /*public async Task<StockDTO> UpdateStatusTaskAsync(int taskId)
         {
-            var task = await _taskRepository.GetAsync(x => x.Id == taskId);
+            var task = await _stockRepository.GetAsync(x => x.Stock_Id == taskId.ToString());
             if (task is null)
             {
                 Log.Information("Task with taskId = {TaskId} was not found", taskId);
@@ -81,12 +84,12 @@ namespace aspnetcore.ntier.BLL.Services
 
             Log.Information("Task with these properties: {@TaskToUpdate} has been updated", task);
 
-            return _mapper.Map<TaskDTO>(await _taskRepository.UpdateStatusTaskAsync(taskToUpdate));
-        }
+            return _mapper.Map<StockDTO>(await _stockRepository.UpdateStatusTaskAsync(taskToUpdate));
+        }*/
 
-        public async Task<TaskDTO> UpdateTaskAsync(TaskDTO taskToUpdate)
+        /*public async Task<TaskDTO> UpdateTaskAsync(TaskDTO taskToUpdate)
         {
-            var taskBeforeUpdate = await _taskRepository.GetAsync(x => x.Id == taskToUpdate.Id);
+            var taskBeforeUpdate = await _stockRepository.GetAsync(x => x.Id == taskToUpdate.Id);
 
             if (taskBeforeUpdate is null)
             {
@@ -94,18 +97,18 @@ namespace aspnetcore.ntier.BLL.Services
                 throw new KeyNotFoundException();
             }
 
-            taskBeforeUpdate.Title = taskToUpdate.Title;
+*//*            taskBeforeUpdate.Title = taskToUpdate.Title;
             taskBeforeUpdate.Description = taskToUpdate.Description;
             taskBeforeUpdate.Status = taskToUpdate.Status;
             taskBeforeUpdate.UserId= (int)taskToUpdate.UserId;
-            taskBeforeUpdate.DateCompleted = taskToUpdate.DateCompleted;
+            taskBeforeUpdate.DateCompleted = taskToUpdate.DateCompleted;*//*
 
             var taskAfterUpdate = _mapper.Map<Taskk>(taskBeforeUpdate);
 
             Log.Information("Task with these properties: {@TaskToUpdate} has been updated", taskAfterUpdate);
 
-            return _mapper.Map<TaskDTO>(await _taskRepository.UpdateTaskAsync(taskAfterUpdate));
-        }
+            return _mapper.Map<TaskDTO>(await _stockRepository.UpdateTaskAsync(taskAfterUpdate));
+        }*/
 
 
     }

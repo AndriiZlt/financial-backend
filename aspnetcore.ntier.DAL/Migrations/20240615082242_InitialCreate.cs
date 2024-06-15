@@ -49,25 +49,6 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Friends",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Age = table.Column<int>(type: "INTEGER", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    Gender = table.Column<string>(type: "TEXT", nullable: false),
-                    FName = table.Column<string>(type: "TEXT", nullable: true),
-                    LName = table.Column<string>(type: "TEXT", nullable: true),
-                    DateCreated = table.Column<string>(type: "TEXT", nullable: false),
-                    Picture = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Friends", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -78,6 +59,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
+                    Ballance = table.Column<int>(type: "INTEGER", nullable: false),
                     NormalizedUserName = table.Column<string>(type: "TEXT", nullable: true),
                     NormalizedEmail = table.Column<string>(type: "TEXT", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -203,24 +185,23 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "BoardStocks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Stock_Id = table.Column<string>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    DateCreated = table.Column<string>(type: "TEXT", nullable: false),
-                    DateDue = table.Column<string>(type: "TEXT", nullable: true),
-                    DateCompleted = table.Column<string>(type: "TEXT", nullable: true)
+                    Exchange = table.Column<string>(type: "TEXT", nullable: false),
+                    Symbol = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Cost_Basis = table.Column<string>(type: "TEXT", nullable: false),
+                    Qty = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_BoardStocks", x => x.Stock_Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Users_UserId",
+                        name: "FK_BoardStocks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -228,30 +209,25 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subtasks",
+                name: "Stocks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Alpaca_Asset_Id = table.Column<string>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    DateCreated = table.Column<string>(type: "TEXT", nullable: false),
-                    DateCompleted = table.Column<string>(type: "TEXT", nullable: true),
-                    TaskId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Exchange = table.Column<string>(type: "TEXT", nullable: false),
+                    Symbol = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Cost_Basis = table.Column<string>(type: "TEXT", nullable: false),
+                    Qty = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subtasks", x => x.Id);
+                    table.PrimaryKey("PK_Stocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subtasks_Tasks_TaskId",
-                        column: x => x.TaskId,
-                        principalTable: "Tasks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Subtasks_Users_UserId",
+                        name: "FK_Stocks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -259,19 +235,19 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "03c6a3ba-6242-415f-8a06-0be6f1ecc712", "2", "User", "User" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "ccbc9483-7a78-4329-a84e-1532de889cbf", "1", "Admin", "Admin" });
+                table: "Users",
+                columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, 0, "6b0f0830-34a3-4fd7-ae21-fd76ff697ad4", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "7dea3af8-5960-407b-b63d-2d3082d96332", "johndoe@gmail.com", false, false, null, "John", null, null, "123", null, null, false, null, "Doe", false, "johndoe" });
+                columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 2, 0, 0, "55de64d2-6488-4578-bdb8-c330802af2b2", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
+
+            migrationBuilder.InsertData(
+                table: "BoardStocks",
+                columns: new[] { "Stock_Id", "Cost_Basis", "Exchange", "Name", "Qty", "Status", "Symbol", "UserId" },
+                values: new object[] { "1", "123", "Nasdaq", "Stock Name", "2", null, "TEST", 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -311,18 +287,13 @@ namespace aspnetcore.ntier.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subtasks_TaskId",
-                table: "Subtasks",
-                column: "TaskId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subtasks_UserId",
-                table: "Subtasks",
+                name: "IX_BoardStocks_UserId",
+                table: "BoardStocks",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_UserId",
-                table: "Tasks",
+                name: "IX_Stocks_UserId",
+                table: "Stocks",
                 column: "UserId");
         }
 
@@ -344,19 +315,16 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Friends");
+                name: "BoardStocks");
 
             migrationBuilder.DropTable(
-                name: "Subtasks");
+                name: "Stocks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -1,21 +1,22 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace aspnetcore.ntier.DAL.Entities
 {
-    public class Asset
+    public class BoardStock
     {
-        public string AssetId {  get; set; }
-        public string Exchange { get; set; }
-        public string Symbol { get; set; }
-        public string Name { get; set; }
-        public bool Tradable { get; set; }
+        [Key]
+        public string Stock_Id {  get; set; }
+        [Required]
         public int UserId { get; set; }
         public User User { get; set; }
+        public string Exchange { get; set; }
+        public string Symbol { get; set; }
+        public string? Name { get; set; }
+        public string Cost_Basis { get; set; }
+        public string Qty { get; set; }
+
+        public string? Status { get; set; }
+
 
         /*        public string active { get; set; }*/
         /*public bool marginable { get; set; }*/
