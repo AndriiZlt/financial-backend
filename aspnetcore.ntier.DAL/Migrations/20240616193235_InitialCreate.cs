@@ -59,7 +59,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
-                    Ballance = table.Column<int>(type: "INTEGER", nullable: false),
+                    Ballance = table.Column<float>(type: "REAL", nullable: false),
                     NormalizedUserName = table.Column<string>(type: "TEXT", nullable: true),
                     NormalizedEmail = table.Column<string>(type: "TEXT", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -185,30 +185,6 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BoardStocks",
-                columns: table => new
-                {
-                    Stock_Id = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Exchange = table.Column<string>(type: "TEXT", nullable: false),
-                    Symbol = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Cost_Basis = table.Column<string>(type: "TEXT", nullable: false),
-                    Qty = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BoardStocks", x => x.Stock_Id);
-                    table.ForeignKey(
-                        name: "FK_BoardStocks_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Stocks",
                 columns: table => new
                 {
@@ -218,10 +194,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     Exchange = table.Column<string>(type: "TEXT", nullable: false),
                     Symbol = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
                     Cost_Basis = table.Column<string>(type: "TEXT", nullable: false),
-                    Qty = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false)
+                    Qty = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -234,20 +209,46 @@ namespace aspnetcore.ntier.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, 0, "6b0f0830-34a3-4fd7-ae21-fd76ff697ad4", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
+            migrationBuilder.CreateTable(
+                name: "BoardStocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    User_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Stock_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Symbol = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Cost_Basis = table.Column<string>(type: "TEXT", nullable: true),
+                    Qty = table.Column<string>(type: "TEXT", nullable: true),
+                    Side = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoardStocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BoardStocks_Stocks_Stock_Id",
+                        column: x => x.Stock_Id,
+                        principalTable: "Stocks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BoardStocks_Users_User_Id",
+                        column: x => x.User_Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 2, 0, 0, "55de64d2-6488-4578-bdb8-c330802af2b2", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
+                values: new object[] { 1, 0, 0f, "c3e6f5e2-69ba-4057-9fa4-e0a9a8521f02", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
 
             migrationBuilder.InsertData(
-                table: "BoardStocks",
-                columns: new[] { "Stock_Id", "Cost_Basis", "Exchange", "Name", "Qty", "Status", "Symbol", "UserId" },
-                values: new object[] { "1", "123", "Nasdaq", "Stock Name", "2", null, "TEST", 2 });
+                table: "Users",
+                columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 2, 0, 0f, "e51fa1e6-6fb1-4033-a8cf-839d2ba21fc5", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -287,9 +288,15 @@ namespace aspnetcore.ntier.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BoardStocks_UserId",
+                name: "IX_BoardStocks_Stock_Id",
                 table: "BoardStocks",
-                column: "UserId");
+                column: "Stock_Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoardStocks_User_Id",
+                table: "BoardStocks",
+                column: "User_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stocks_UserId",
@@ -318,13 +325,13 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "BoardStocks");
 
             migrationBuilder.DropTable(
-                name: "Stocks");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Stocks");
 
             migrationBuilder.DropTable(
                 name: "Users");

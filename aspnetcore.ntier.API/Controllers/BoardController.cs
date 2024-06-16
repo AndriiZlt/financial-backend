@@ -47,11 +47,12 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpPost("addboard")]
-        public async Task<IActionResult> AddStockToBoard(BoardAddDTO stockToAddDTO)
+        public async Task<IActionResult> AddToBoard(BoardItemToAddDTO boardItemToAdd)
         {
             try
             {
-                return Ok(await _boardService.AddToBoardAsync(stockToAddDTO));
+                
+                return Ok(await _boardService.AddToBoardAsync(boardItemToAdd));
             }
             catch (Exception ex)
             {
@@ -112,7 +113,7 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpDelete("removeboard")]
-        public async Task<IActionResult> R(int stockId)
+        public async Task<IActionResult> RemoveItemFromBoard(int stockId)
         {
             try
             {

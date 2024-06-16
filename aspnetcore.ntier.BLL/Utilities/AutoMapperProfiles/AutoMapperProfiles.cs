@@ -23,6 +23,8 @@ public static class AutoMapperProfiles
             CreateMap<Friend, FriendToAddDTO>().ReverseMap();
             CreateMap<Stock, StockToAddDTO>().ReverseMap();
             CreateMap<Stock, StockDTO>().ReverseMap();
+            CreateMap<BoardItem, BoardItemDTO>().ReverseMap();
+            CreateMap<BoardItem, BoardItemToAddDTO>().ReverseMap();
         }
     }
 }

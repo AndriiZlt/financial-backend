@@ -2,12 +2,11 @@
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 
 namespace aspnetcore.ntier.DAL.Repositories
 {
-    public class BoardRepository : GenericRepository<BoardStock>, IBoardRepository
+    public class BoardRepository : GenericRepository<BoardItem>, IBoardRepository
     {
 
         private readonly AspNetCoreNTierDbContext _aspNetCoreNTierDbContext;
@@ -15,10 +14,10 @@ namespace aspnetcore.ntier.DAL.Repositories
         {
             _aspNetCoreNTierDbContext = aspNetCoreNTierDbContext;
         }
-        public async Task<List<BoardStock>> GetListAsync()
+        public async Task<List<BoardItem>> GetListAsync()
         {
            /* return await _aspNetCoreNTierDbContext.Set<Subtask>().ToListAsync();*/
-            return await _aspNetCoreNTierDbContext.Set<BoardStock>().ToListAsync();
+            return await _aspNetCoreNTierDbContext.Set<BoardItem>().ToListAsync();
         }
 
 /*        public async Task<BoardStock> GetAsync(Expression<Func<BoardStock, bool>> filter = null, CancellationToken cancellationToken = default)
@@ -26,7 +25,7 @@ namespace aspnetcore.ntier.DAL.Repositories
             return await _aspNetCoreNTierDbContext.Set<Subtask>().AsNoTracking().FirstOrDefaultAsync(filter, cancellationToken);
         }*/
 
-        public async Task<BoardStock> AddAsync(BoardStock stock)
+        public async Task<BoardItem> AddAsync(BoardItem stock)
         {
 
             await _aspNetCoreNTierDbContext.AddAsync(stock);
@@ -34,7 +33,7 @@ namespace aspnetcore.ntier.DAL.Repositories
             return stock;
         }
 
-        public async Task<int> DeleteAsync(BoardStock stock)
+        public async Task<int> DeleteAsync(BoardItem stock)
         {
             _ = _aspNetCoreNTierDbContext.Remove(stock);
             return await _aspNetCoreNTierDbContext.SaveChangesAsync();

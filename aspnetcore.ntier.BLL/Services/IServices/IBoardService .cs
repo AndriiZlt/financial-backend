@@ -1,14 +1,13 @@
 ﻿
-using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DTO.DTOs;
 
 namespace aspnetcore.ntier.BLL.Services.IServices;
 
 public interface IBoardService
 {
-    Task<List<BoardStockDTO>> GetBoardAsync(CancellationToken cancellationToken = default);
+    Task<List<BoardItemDTO>> GetBoardAsync(CancellationToken cancellationToken = default);
 
-    Task<BoardStockDTO> AddToBoardAsync(BoardAddDTO stockToAddDTO);
+    Task<BoardItemDTO> AddToBoardAsync(BoardItemToAddDTO stockToAddDTO);
 
     Task RemoveFromBoardAsync(int stockId);
 

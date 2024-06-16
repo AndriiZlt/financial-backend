@@ -12,7 +12,7 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
     public DbSet<User> Users { get; set; }
 
     public DbSet<Stock> Stocks { get; set; }
-    public DbSet<BoardStock> BoardStocks { get; set; }
+    public DbSet<BoardItem> BoardStocks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,25 +40,24 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
              }
          );
 
-        modelBuilder.Entity<BoardStock>().HasData(
-             new BoardStock
-             {
-                 Stock_Id = "1",
-                 UserId = 2,
-                 Symbol = "TEST",
-                 Exchange = "Nasdaq",
-                 Name = "Stock Name",
-                 Cost_Basis = "123",
-                 Qty = "2",
-             }
- );
-
+        modelBuilder.Entity<Stock>()
+            .HasOne(s => s.BoardStock)
+            .WithOne(t => t.Stock)
+            .HasForeignKey<BoardItem>(t=>t.Stock_Id)
+            .IsRequired();
 
         modelBuilder.Entity<Stock>()
             .HasOne(s => s.User)
             .WithMany(t => t.Stocks)
             .HasForeignKey(t => t.UserId)
             .IsRequired();
+
+        modelBuilder.Entity<BoardItem>()
+            .HasOne(s => s.User)
+            .WithMany(t => t.BoardItems)
+            .HasForeignKey(t => t.User_Id)
+            .IsRequired();
+
 
     }
 }

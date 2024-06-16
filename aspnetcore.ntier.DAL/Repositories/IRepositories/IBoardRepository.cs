@@ -3,15 +3,15 @@ using System.Linq.Expressions;
 
 namespace aspnetcore.ntier.DAL.Repositories.IRepositories
 {
-    public interface IBoardRepository:IGenericRepository<BoardStock>
+    public interface IBoardRepository:IGenericRepository<BoardItem>
     {
         /*Task<BoardStock> GetAsync(Expression<Func<Subtask, bool>> filter = null, CancellationToken cancellationToken = default);*/
 
-        Task<List<BoardStock>> GetListAsync();
+        Task<List<BoardItem>> GetListAsync();
 
-        Task<BoardStock> AddAsync(BoardStock stock);
+        Task<BoardItem> AddAsync(BoardItem stock);
 
-        Task<int> DeleteAsync(BoardStock stock);
+        Task<int> DeleteAsync(BoardItem stock);
 
 /*        Task<Subtask> UpdateStatusTaskAsync(Subtask task);
 

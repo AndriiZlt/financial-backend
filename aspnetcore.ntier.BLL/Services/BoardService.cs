@@ -17,35 +17,36 @@ namespace aspnetcore.ntier.BLL.Services
     {
 
         private readonly IBoardRepository _boardRepository;
+        private readonly IBoardRepository _stockRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
 
 
-        public BoardService (IBoardRepository boardRepository, IMapper mapper,  IHttpContextAccessor httpContext)
+        public BoardService (IBoardRepository boardRepository, IBoardRepository stockRepository, IMapper mapper,  IHttpContextAccessor httpContext)
         {
             _boardRepository = boardRepository;
+            _stockRepository = stockRepository;
             _mapper = mapper;
             _httpContext = httpContext;
         }
 
-        public async Task<List<BoardStockDTO>> GetBoardAsync(CancellationToken cancellationToken = default)
+        public async Task<List<BoardItemDTO>> GetBoardAsync(CancellationToken cancellationToken = default)
         {
             var stocksToReturn = await _boardRepository.GetListAsync();
-            return _mapper.Map<List<BoardStockDTO>>(stocksToReturn);
+            return _mapper.Map<List<BoardItemDTO>>(stocksToReturn);
         }
 
-        public async Task<BoardStockDTO> AddToBoardAsync([FromBody] BoardAddDTO stockToAddDTO)
+        public async Task<BoardItemDTO> AddToBoardAsync([FromBody] BoardItemToAddDTO boardItemToAdd)
         {
-            var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            stockToAddDTO.UserId = Convert.ToInt32(userId);
-
-            var addedStock = await _boardRepository.AddAsync(_mapper.Map<BoardStock>(stockToAddDTO));
-            return _mapper.Map<BoardStockDTO>(addedStock);
+            Log.Information("Board controller {@boardItemToAdd}", boardItemToAdd);
+            var addedItem = await _boardRepository.AddAsync(_mapper.Map<BoardItem>(boardItemToAdd));
+            Log.Information("Board controller {@boardItemToAdd}", addedItem);
+            return _mapper.Map<BoardItemDTO>(addedItem);
         }
 
         public async Task RemoveFromBoardAsync(int stockId)
         {
-            var stockToDelete = await _boardRepository.GetAsync(x => x.Stock_Id == stockId.ToString());
+            var stockToDelete = await _boardRepository.GetAsync(x => x.Stock_Id == stockId);
 
             if (stockToDelete is null)
             {
