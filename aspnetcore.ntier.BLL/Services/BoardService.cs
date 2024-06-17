@@ -38,9 +38,7 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<BoardItemDTO> AddToBoardAsync([FromBody] BoardItemToAddDTO boardItemToAdd)
         {
-            Log.Information("Board controller {@boardItemToAdd}", boardItemToAdd);
             var addedItem = await _boardRepository.AddAsync(_mapper.Map<BoardItem>(boardItemToAdd));
-            Log.Information("Board controller {@boardItemToAdd}", addedItem);
             return _mapper.Map<BoardItemDTO>(addedItem);
         }
 

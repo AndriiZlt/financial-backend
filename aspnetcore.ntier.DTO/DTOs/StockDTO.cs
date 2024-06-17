@@ -12,5 +12,6 @@ public class StockDTO
     public string? Name { get; set; }
     public string Cost_Basis { get; set; }
     public string Qty { get; set; }
+    public bool? Is_For_Sell { get; set; }
 
 }

@@ -42,9 +42,9 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<StockDTO> AddStockAsync([FromBody] StockToAddDTO stockToAddDTO)
         {
-            Log.Information("stockToAddDTO {@stockId}", stockToAddDTO);
-/*            var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);*/
+
             stockToAddDTO.UserId = Int32.Parse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Log.Information("stockToAddDTO {@stockId}", stockToAddDTO);
             var stock = _mapper.Map<Stock>(stockToAddDTO);
             var addedStock = await _stockRepository.AddAsync(_mapper.Map<Stock>(stockToAddDTO));
 

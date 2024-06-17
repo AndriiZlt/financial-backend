@@ -13,5 +13,4 @@ public class BoardItemDTO
     public string? Cost_Basis { get; set; }
     public string? Qty { get; set; }
     public string? Side { get; set; }
-    public Stock? Stock { get; set; }
 }
