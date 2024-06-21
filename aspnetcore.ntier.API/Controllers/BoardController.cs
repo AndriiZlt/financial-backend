@@ -109,7 +109,7 @@ namespace aspnetcore.ntier.API.Controllers
         }*/
 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpDelete("removeboard")]
@@ -130,7 +130,7 @@ namespace aspnetcore.ntier.API.Controllers
                 Log.Error("An unexpected error occurred in DeleteSubtaskAsync controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }
+        }*/
 
     }
 }

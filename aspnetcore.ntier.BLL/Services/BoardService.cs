@@ -30,10 +30,10 @@ namespace aspnetcore.ntier.BLL.Services
             _httpContext = httpContext;
         }
 
-        public async Task<List<BoardItemDTO>> GetBoardAsync(CancellationToken cancellationToken = default)
+        public async Task<List<StockDTO>> GetBoardAsync(CancellationToken cancellationToken = default)
         {
             var stocksToReturn = await _boardRepository.GetListAsync();
-            return _mapper.Map<List<BoardItemDTO>>(stocksToReturn);
+            return _mapper.Map<List<StockDTO>>(stocksToReturn);
         }
 
         public async Task<BoardItemDTO> AddToBoardAsync([FromBody] BoardItemToAddDTO boardItemToAdd)
@@ -42,7 +42,7 @@ namespace aspnetcore.ntier.BLL.Services
             return _mapper.Map<BoardItemDTO>(addedItem);
         }
 
-        public async Task RemoveFromBoardAsync(int stockId)
+/*        public async Task RemoveFromBoardAsync(int stockId)
         {
             var stockToDelete = await _boardRepository.GetAsync(x => x.Stock_Id == stockId);
 
@@ -53,7 +53,7 @@ namespace aspnetcore.ntier.BLL.Services
             }
 
             await _boardRepository.DeleteAsync(stockToDelete);
-        }
+        }*/
 
         /*public async Task<SubtaskDTO> UpdateStatusSubtaskAsync(int taskId)
         {

@@ -6,7 +6,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 
 
@@ -67,48 +69,41 @@ namespace aspnetcore.ntier.BLL.Services
             await _stockRepository.DeleteAsync(taskToDelete);
         }
 
-        /*public async Task<StockDTO> UpdateStatusTaskAsync(int taskId)
+        public async Task<StockDTO> UpdateStatusTaskAsync(int stockId, string status)
         {
-            var task = await _stockRepository.GetAsync(x => x.Stock_Id == taskId.ToString());
-            if (task is null)
+            Log.Information("UpdateStatus: {Id},{status}", stockId, status);
+            var stockToUpdate = await _stockRepository.GetAsync(x => x.Id == stockId);
+            if (stockToUpdate is null)
             {
-                Log.Information("Task with taskId = {TaskId} was not found", taskId);
+                Log.Information("Stock with Id = {Id} was not found", stockId);
                 throw new KeyNotFoundException();
             }
 
-            string status = task.Status == "undone" ? "completed" : "undone";
+            stockToUpdate.Status = status;
 
-            task.Status = status;
+            var stock = _mapper.Map<Stock>(stockToUpdate);
 
-            var taskToUpdate = _mapper.Map<Taskk>(task);
+            Log.Information("Stock {@stock} has been updated", stockToUpdate);
 
-            Log.Information("Task with these properties: {@TaskToUpdate} has been updated", task);
+            return _mapper.Map<StockDTO>(await _stockRepository.UpdateStatusTaskAsync(stock));
+        }
 
-            return _mapper.Map<StockDTO>(await _stockRepository.UpdateStatusTaskAsync(taskToUpdate));
-        }*/
-
-        /*public async Task<TaskDTO> UpdateTaskAsync(TaskDTO taskToUpdate)
+        public async Task<StockDTO> UpdateStockAsync(StockDTO updatedStock)
         {
-            var taskBeforeUpdate = await _stockRepository.GetAsync(x => x.Id == taskToUpdate.Id);
+            var stockToUpdate = await _stockRepository.GetAsync(x => x.Id == updatedStock.Id);
 
-            if (taskBeforeUpdate is null)
+            if (stockToUpdate is null)
             {
-                Log.Information("Task with taskId = {TaskId} was not found", taskToUpdate.Id);
+                Log.Information("Stock with Id = {TaskId} was not found", updatedStock.Id);
                 throw new KeyNotFoundException();
             }
 
-*//*            taskBeforeUpdate.Title = taskToUpdate.Title;
-            taskBeforeUpdate.Description = taskToUpdate.Description;
-            taskBeforeUpdate.Status = taskToUpdate.Status;
-            taskBeforeUpdate.UserId= (int)taskToUpdate.UserId;
-            taskBeforeUpdate.DateCompleted = taskToUpdate.DateCompleted;*//*
+            var stockAfterUpdate = _mapper.Map<Stock>(updatedStock);
 
-            var taskAfterUpdate = _mapper.Map<Taskk>(taskBeforeUpdate);
+            Log.Information("Task with these properties: {@TaskToUpdate} has been updated", updatedStock);
 
-            Log.Information("Task with these properties: {@TaskToUpdate} has been updated", taskAfterUpdate);
-
-            return _mapper.Map<TaskDTO>(await _stockRepository.UpdateTaskAsync(taskAfterUpdate));
-        }*/
+            return _mapper.Map<StockDTO>(await _stockRepository.UpdateStockAsync(stockAfterUpdate));
+        }
 
 
     }

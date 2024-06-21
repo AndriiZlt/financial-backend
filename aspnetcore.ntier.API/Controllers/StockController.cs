@@ -1,5 +1,6 @@
 ﻿
 using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,38 +61,40 @@ namespace aspnetcore.ntier.API.Controllers
         }
 
 
-        /*[ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPut("updatestatus/{stockId}")]
-        public async Task<IActionResult> UpdateStatusTask(int taskId)
+        [HttpPut("updatestatus/{stockId}/{newStatus}")]
+        public async Task<IActionResult> UpdateStockStatus(int stockId, string newStatus)
         {
             try
             {
-                return Ok(await _stockService.UpdateStatusTaskAsync(taskId));
+                Log.Information("StockId:{1}; New Status:{2}", stockId, newStatus);
+                return Ok(await _stockService.UpdateStatusTaskAsync(stockId, newStatus));
             }
             catch (KeyNotFoundException ex)
             {
-                Log.Error("KeyNotFoundException in UpdateStatusTask controller", ex);
+                Log.Error("KeyNotFoundException in UpdateStockStatus controller", ex);
                 return NotFound("Task not found");
             }
             catch (Exception ex)
             {
-                Log.Error( "An unexpected error occurred in UpdateStatusTask controller", ex);
+                Log.Error("An unexpected error occurred in UpdateStatusTask controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }*/
+        }
 
 
-        /*[ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPut("updatetask")]
-        public async Task<IActionResult> UpdateTask(TaskDTO taskToUpdate)
+        [HttpPut("updatestock")]
+        public async Task<IActionResult> UpdatezStock(StockDTO updatedStock)
         {
             try
             {
-*//*                return Ok(await _stockService.UpdateStockAsync(taskToUpdate));*//*
+                Log.Information("Updated stock:{@1}", updatedStock);
+                return Ok(await _stockService.UpdateStockAsync(updatedStock));
             }
             catch (KeyNotFoundException ex)
             {
@@ -103,7 +106,7 @@ namespace aspnetcore.ntier.API.Controllers
                 Log.Error("An unexpected error occurred in UpdateTasks controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }*/
+        }
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]

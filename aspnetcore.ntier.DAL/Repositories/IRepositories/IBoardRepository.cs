@@ -7,7 +7,7 @@ namespace aspnetcore.ntier.DAL.Repositories.IRepositories
     {
         /*Task<BoardStock> GetAsync(Expression<Func<Subtask, bool>> filter = null, CancellationToken cancellationToken = default);*/
 
-        Task<List<BoardItem>> GetListAsync();
+        Task<List<Stock>> GetListAsync();
 
         Task<BoardItem> AddAsync(BoardItem stock);
 

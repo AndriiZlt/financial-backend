@@ -1,5 +1,4 @@
 ﻿
-using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DTO.DTOs;
 
 namespace aspnetcore.ntier.BLL.Services.IServices;
@@ -12,7 +11,7 @@ public interface IStockService
 
     Task DeleteTaskAsync(int taskId);
 
-/*    Task<TaskDTO> UpdateStatusTaskAsync(int taskId);
+    Task<StockDTO> UpdateStatusTaskAsync(int stockId, string status);
 
-    Task<TaskDTO> UpdateTaskAsync(TaskDTO taskToUpdate);*/
+    Task<StockDTO> UpdateStockAsync(StockDTO stock);
 }

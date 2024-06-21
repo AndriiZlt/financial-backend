@@ -11,7 +11,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20240616193235_InitialCreate")]
+    [Migration("20240621072113_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,26 +34,24 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Property<string>("Qty")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Side")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Stock_Id")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Symbol")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("User_Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Stock_Id")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("User_Id");
-
-                    b.ToTable("BoardStocks");
+                    b.ToTable("BoardItem");
                 });
 
             modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Stock", b =>
@@ -78,6 +76,10 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Qty")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -170,7 +172,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Ballance = 0f,
-                            ConcurrencyStamp = "c3e6f5e2-69ba-4057-9fa4-e0a9a8521f02",
+                            ConcurrencyStamp = "e0c81953-a241-422f-8c23-02f586c77710",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -186,7 +188,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Ballance = 0f,
-                            ConcurrencyStamp = "e51fa1e6-6fb1-4033-a8cf-839d2ba21fc5",
+                            ConcurrencyStamp = "98346fed-bffa-4a12-a0b5-583b22921a60",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -393,19 +395,11 @@ namespace aspnetcore.ntier.DAL.Migrations
 
             modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.BoardItem", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.Stock", "Stock")
-                        .WithOne("BoardStock")
-                        .HasForeignKey("aspnetcore.ntier.DAL.Entities.BoardItem", "Stock_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("aspnetcore.ntier.DAL.Entities.User", "User")
                         .WithMany("BoardItems")
-                        .HasForeignKey("User_Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Stock");
 
                     b.Navigation("User");
                 });
@@ -469,12 +463,6 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Stock", b =>
-                {
-                    b.Navigation("BoardStock")
                         .IsRequired();
                 });
 

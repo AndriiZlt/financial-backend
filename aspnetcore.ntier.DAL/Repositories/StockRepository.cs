@@ -39,21 +39,21 @@ namespace aspnetcore.ntier.DAL.Repositories
             return await _aspNetCoreNTierDbContext.SaveChangesAsync();
         }
 
-/*        public async Task<Taskk> UpdateStatusTaskAsync(Taskk task)
+        public async Task<Stock> UpdateStatusTaskAsync(Stock stock)
         {
-            _ = _aspNetCoreNTierDbContext.Update(task);
+            _ = _aspNetCoreNTierDbContext.Update(stock);
 
             await _aspNetCoreNTierDbContext.SaveChangesAsync();
-            return task;
-        }*/
+            return stock;
+        }
 
-/*        public async Task<Taskk> UpdateTaskAsync(Taskk task)
+        public async Task<Stock> UpdateStockAsync(Stock stock)
         {
-            _ = _aspNetCoreNTierDbContext.Update(task);
+            _ = _aspNetCoreNTierDbContext.Update(stock);
 
             await _aspNetCoreNTierDbContext.SaveChangesAsync();
-            return task;
-        }*/
+            return stock;
+        }
 
     }
 }

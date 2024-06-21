@@ -14,10 +14,10 @@ namespace aspnetcore.ntier.DAL.Repositories
         {
             _aspNetCoreNTierDbContext = aspNetCoreNTierDbContext;
         }
-        public async Task<List<BoardItem>> GetListAsync()
+        public async Task<List<Stock>> GetListAsync()
         {
-           /* return await _aspNetCoreNTierDbContext.Set<Subtask>().ToListAsync();*/
-            return await _aspNetCoreNTierDbContext.Set<BoardItem>().ToListAsync();
+            /* return await _aspNetCoreNTierDbContext.Set<Subtask>().ToListAsync();*/
+            return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t => t.Status != "none").ToListAsync();
         }
 
 /*        public async Task<BoardStock> GetAsync(Expression<Func<BoardStock, bool>> filter = null, CancellationToken cancellationToken = default)
