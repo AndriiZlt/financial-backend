@@ -70,7 +70,7 @@ namespace aspnetcore.ntier.API.Controllers
             try
             {
                 Log.Information("StockId:{1}; New Status:{2}", stockId, newStatus);
-                return Ok(await _stockService.UpdateStatusTaskAsync(stockId, newStatus));
+                return Ok(await _stockService.UpdateStatusAsync(stockId, newStatus));
             }
             catch (KeyNotFoundException ex)
             {
@@ -88,13 +88,12 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPut("updatestock")]
-        public async Task<IActionResult> UpdatezStock(StockDTO updatedStock)
+        [HttpPut("buystock/{stockId}")]
+        public async Task<IActionResult> BuyStock(string stockId)
         {
             try
             {
-                Log.Information("Updated stock:{@1}", updatedStock);
-                return Ok(await _stockService.UpdateStockAsync(updatedStock));
+                return Ok(await _stockService.BuyStockAsync(stockId));
             }
             catch (KeyNotFoundException ex)
             {

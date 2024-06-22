@@ -15,7 +15,9 @@ public interface IStockService
 
     Task DeleteTaskAsync(int taskId);
 
-    Task<StockDTO> UpdateStatusTaskAsync(int stockId, StockStatus status);
+    Task<StockDTO> UpdateStatusAsync(int stockId, StockStatus status);
 
     Task<StockDTO> UpdateStockAsync(StockDTO stock);
+
+    Task<StockDTO> BuyStockAsync(string stockId);
 }

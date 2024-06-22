@@ -24,10 +24,6 @@ namespace aspnetcore.ntier.DAL.Repositories
         {
             return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t => t.Status != StockStatus.Fixed).ToListAsync();
         }
-        public async Task<List<Stock>> GetListAsync()
-        {
-            return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t => t.Status != StockStatus.Fixed).ToListAsync();
-        }
 
         public async Task<Stock> GetAsync(Expression<Func<Stock, bool>> filter = null, CancellationToken cancellationToken = default)
         {
@@ -41,13 +37,13 @@ namespace aspnetcore.ntier.DAL.Repositories
             return stock;
         }
 
-        public async Task<int> DeleteAsync(Stock task)
+/*        public async Task<int> DeleteAsync(Stock task)
         {
             _ = _aspNetCoreNTierDbContext.Remove(task);
             return await _aspNetCoreNTierDbContext.SaveChangesAsync();
-        }
+        }*/
 
-        public async Task<Stock> UpdateStatusTaskAsync(Stock stock)
+        public async Task<Stock> UpdateStatusAsync(Stock stock)
         {
             _ = _aspNetCoreNTierDbContext.Update(stock);
 
@@ -55,7 +51,7 @@ namespace aspnetcore.ntier.DAL.Repositories
             return stock;
         }
 
-        public async Task<Stock> UpdateStockAsync(Stock stock)
+        public async Task<Stock> BuyStockAsync(Stock stock)
         {
             _ = _aspNetCoreNTierDbContext.Update(stock);
 
@@ -63,6 +59,15 @@ namespace aspnetcore.ntier.DAL.Repositories
             return stock;
         }
 
+        public Task<int> ThrowErrorAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync(Stock stock)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
