@@ -15,7 +15,7 @@ namespace aspnetcore.ntier.DAL.Repositories.IRepositories
 
         Task<int> DeleteAsync(Stock stock);
 
-        Task<Stock> UpdateStatusAsync(Stock stock);
+        Task<Stock> UpdateAsync(Stock stock);
 
         Task<Stock> BuyStockAsync(Stock stock);
 

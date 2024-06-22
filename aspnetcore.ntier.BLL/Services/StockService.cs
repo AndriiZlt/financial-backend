@@ -52,14 +52,28 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<StockDTO> AddStockAsync([FromBody] StockToAddDTO stockToAddDTO)
         {
+            Log.Information("Stock to ADD: {@stockId}", stockToAddDTO);
+            var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Alpaca_Asset_Id == stockToAddDTO.Alpaca_Asset_Id && x.UserId.ToString()== userId));
+            if (stockToUpdate == null)
+            {
+                stockToAddDTO.UserId = Int32.Parse(userId);
+                var stock = _mapper.Map<Stock>(stockToAddDTO);
+                var addedStock = await _stockRepository.AddAsync(_mapper.Map<Stock>(stockToAddDTO));
+                Log.Information("Added Stock: {@stockId}", addedStock);
+                return _mapper.Map<StockDTO>(addedStock);
+            }
+            else
+            {
+                stockToUpdate.Qty = (Int32.Parse(stockToUpdate.Qty) + Int32.Parse(stockToAddDTO.Qty)).ToString();
+                var updatedStock = await _stockRepository.UpdateAsync(_mapper.Map<Stock>(stockToUpdate));
+                Log.Information("Stock updated: {@stockId}", updatedStock);
+                return _mapper.Map<StockDTO>(updatedStock);
 
-            stockToAddDTO.UserId = Int32.Parse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            Log.Information("stockToAddDTO {@stockId}", stockToAddDTO);
-            var stock = _mapper.Map<Stock>(stockToAddDTO);
-            var addedStock = await _stockRepository.AddAsync(_mapper.Map<Stock>(stockToAddDTO));
+            }
 
-            Log.Information("addedStock {@stockId}", addedStock);
-            return _mapper.Map<StockDTO>(addedStock);
+
+
         }
 
  
@@ -93,7 +107,7 @@ namespace aspnetcore.ntier.BLL.Services
 
             Log.Information("Stock {@stock} has been updated", stockToUpdate);
 
-            return _mapper.Map<StockDTO>(await _stockRepository.UpdateStatusAsync(stock));
+            return _mapper.Map<StockDTO>(await _stockRepository.UpdateAsync(stock));
         }
 
         public async Task<StockDTO> BuyStockAsync(string stockId)
