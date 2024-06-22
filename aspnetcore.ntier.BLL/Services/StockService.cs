@@ -1,5 +1,6 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DAL.Entities;
+using aspnetcore.ntier.DAL.Repositories;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
@@ -42,6 +43,12 @@ namespace aspnetcore.ntier.BLL.Services
             return _mapper.Map<List<StockDTO>>(stocksToReturn);
         }
 
+        public async Task<List<StockDTO>> GetBoardAsync(CancellationToken cancellationToken = default)
+        {
+            var stocksToReturn = await _stockRepository.GetBoardListAsync();
+            return _mapper.Map<List<StockDTO>>(stocksToReturn);
+        }
+
         public async Task<StockDTO> AddStockAsync([FromBody] StockToAddDTO stockToAddDTO)
         {
 
@@ -69,7 +76,7 @@ namespace aspnetcore.ntier.BLL.Services
             await _stockRepository.DeleteAsync(taskToDelete);
         }
 
-        public async Task<StockDTO> UpdateStatusTaskAsync(int stockId, string status)
+        public async Task<StockDTO> UpdateStatusTaskAsync(int stockId, StockStatus status)
         {
             Log.Information("UpdateStatus: {Id},{status}", stockId, status);
             var stockToUpdate = await _stockRepository.GetAsync(x => x.Id == stockId);
@@ -104,6 +111,8 @@ namespace aspnetcore.ntier.BLL.Services
 
             return _mapper.Map<StockDTO>(await _stockRepository.UpdateStockAsync(stockAfterUpdate));
         }
+
+
 
 
     }

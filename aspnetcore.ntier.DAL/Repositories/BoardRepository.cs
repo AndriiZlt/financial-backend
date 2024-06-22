@@ -17,7 +17,7 @@ namespace aspnetcore.ntier.DAL.Repositories
         public async Task<List<Stock>> GetListAsync()
         {
             /* return await _aspNetCoreNTierDbContext.Set<Subtask>().ToListAsync();*/
-            return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t => t.Status != "none").ToListAsync();
+            return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t => t.Status != StockStatus.Fixed).ToListAsync();
         }
 
 /*        public async Task<BoardStock> GetAsync(Expression<Func<BoardStock, bool>> filter = null, CancellationToken cancellationToken = default)

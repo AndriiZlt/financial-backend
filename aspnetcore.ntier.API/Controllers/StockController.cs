@@ -65,7 +65,7 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpPut("updatestatus/{stockId}/{newStatus}")]
-        public async Task<IActionResult> UpdateStockStatus(int stockId, string newStatus)
+        public async Task<IActionResult> UpdateStockStatus(int stockId, StockStatus newStatus)
         {
             try
             {
@@ -112,6 +112,24 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [HttpGet("getboard")]
+        public async Task<IActionResult> GetBoard()
+        {
+            try
+            {
+                var result = await _stockService.GetBoardAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("An unexpected error occurred in GetTasks controller", ex);
+                return BadRequest("Something went wrong");
+            }
+        }
+
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpDelete("deletetask/{taskId}")]
         public async Task<IActionResult> DeleteStock(int taskId)
         {
@@ -130,7 +148,7 @@ namespace aspnetcore.ntier.API.Controllers
                 Log.Error("An unexpected error occurred in DeleteTaskAsync controller", ex);
                 return BadRequest("Something went wrong");
             }
-        }
+        }*/
 
     }
 }

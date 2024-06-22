@@ -1,4 +1,6 @@
-﻿namespace aspnetcore.ntier.DTO.DTOs;
+﻿using aspnetcore.ntier.DAL.Entities;
+
+namespace aspnetcore.ntier.DTO.DTOs;
 
 public class StockToAddDTO
 {
@@ -9,6 +11,6 @@ public class StockToAddDTO
     public string? Name { get; set; }
     public string Cost_Basis { get; set; }
     public string Qty { get; set; }
-    public string Status { get; set; }
+    public StockStatus Status { get; set; }
 
 }

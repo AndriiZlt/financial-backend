@@ -9,6 +9,8 @@ namespace aspnetcore.ntier.DAL.Repositories.IRepositories
 
         Task<List<Stock>> GetListAsync(int userId);
 
+        Task<List<Stock>> GetBoardListAsync();
+
         Task<Stock> AddAsync(Stock stock);
 
         Task<int> DeleteAsync(Stock stockk);

@@ -222,7 +222,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Cost_Basis = table.Column<string>(type: "TEXT", nullable: false),
                     Qty = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false)
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,12 +238,12 @@ namespace aspnetcore.ntier.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, 0f, "e0c81953-a241-422f-8c23-02f586c77710", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
+                values: new object[] { 1, 0, 0f, "332b5069-fadc-4ed0-9c86-d6a4c61d4c08", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 2, 0, 0f, "98346fed-bffa-4a12-a0b5-583b22921a60", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
+                values: new object[] { 2, 0, 0f, "4dbce527-ecee-4ba7-ad67-4687165d4f3c", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

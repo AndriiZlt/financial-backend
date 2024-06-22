@@ -11,7 +11,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20240621072113_InitialCreate")]
+    [Migration("20240622065011_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,9 +79,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Symbol")
                         .IsRequired()
@@ -172,7 +171,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Ballance = 0f,
-                            ConcurrencyStamp = "e0c81953-a241-422f-8c23-02f586c77710",
+                            ConcurrencyStamp = "332b5069-fadc-4ed0-9c86-d6a4c61d4c08",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -188,7 +187,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Ballance = 0f,
-                            ConcurrencyStamp = "98346fed-bffa-4a12-a0b5-583b22921a60",
+                            ConcurrencyStamp = "4dbce527-ecee-4ba7-ad67-4687165d4f3c",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
