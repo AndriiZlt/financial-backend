@@ -7,7 +7,7 @@ public class StockDTO
 {
     public int Id { get; set; }
     public string Alpaca_Asset_Id { get; set; }
-    public int UserId { get; set; }
+    public int User_Id { get; set; }
     public string Exchange { get; set; }
     public string Symbol { get; set; }
     public string? Name { get; set; }

@@ -185,38 +185,13 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BoardItem",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    User_Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    Symbol = table.Column<string>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Cost_Basis = table.Column<string>(type: "TEXT", nullable: true),
-                    Qty = table.Column<string>(type: "TEXT", nullable: true),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BoardItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BoardItem_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Stocks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Alpaca_Asset_Id = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    User_Id = table.Column<int>(type: "INTEGER", nullable: false),
                     Exchange = table.Column<string>(type: "TEXT", nullable: false),
                     Symbol = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
@@ -228,8 +203,42 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Stocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stocks_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Stocks_Users_User_Id",
+                        column: x => x.User_Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BoardStocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Stock_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Alpaca_Asset_Id = table.Column<string>(type: "TEXT", nullable: false),
+                    User_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Exchange = table.Column<string>(type: "TEXT", nullable: false),
+                    Symbol = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Cost_Basis = table.Column<string>(type: "TEXT", nullable: true),
+                    Qty = table.Column<string>(type: "TEXT", nullable: true),
+                    Max_Qty = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoardStocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BoardStocks_Stocks_Stock_Id",
+                        column: x => x.Stock_Id,
+                        principalTable: "Stocks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BoardStocks_Users_User_Id",
+                        column: x => x.User_Id,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -238,12 +247,12 @@ namespace aspnetcore.ntier.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, 0f, "332b5069-fadc-4ed0-9c86-d6a4c61d4c08", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
+                values: new object[] { 1, 0, 10000f, "670278ba-42df-4adb-a3c2-e8b87fa6cad6", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 2, 0, 0f, "4dbce527-ecee-4ba7-ad67-4687165d4f3c", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
+                values: new object[] { 2, 0, 10000f, "15c8b620-ffe7-45b1-b2f5-5a4dd00566a2", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -283,14 +292,19 @@ namespace aspnetcore.ntier.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BoardItem_UserId",
-                table: "BoardItem",
-                column: "UserId");
+                name: "IX_BoardStocks_Stock_Id",
+                table: "BoardStocks",
+                column: "Stock_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stocks_UserId",
+                name: "IX_BoardStocks_User_Id",
+                table: "BoardStocks",
+                column: "User_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stocks_User_Id",
                 table: "Stocks",
-                column: "UserId");
+                column: "User_Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -311,16 +325,16 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BoardItem");
-
-            migrationBuilder.DropTable(
-                name: "Stocks");
+                name: "BoardStocks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Stocks");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -11,7 +11,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20240622065011_InitialCreate")]
+    [Migration("20240622173555_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,18 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Alpaca_Asset_Id")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Cost_Basis")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Exchange")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Max_Qty")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -34,24 +45,25 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Property<string>("Qty")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Stock_Id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Symbol")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("User_Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Stock_Id");
 
-                    b.ToTable("BoardItem");
+                    b.HasIndex("User_Id");
+
+                    b.ToTable("BoardStocks");
                 });
 
             modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Stock", b =>
@@ -86,12 +98,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("User_Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("User_Id");
 
                     b.ToTable("Stocks");
                 });
@@ -170,8 +182,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            Ballance = 0f,
-                            ConcurrencyStamp = "332b5069-fadc-4ed0-9c86-d6a4c61d4c08",
+                            Ballance = 10000f,
+                            ConcurrencyStamp = "670278ba-42df-4adb-a3c2-e8b87fa6cad6",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -186,8 +198,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            Ballance = 0f,
-                            ConcurrencyStamp = "4dbce527-ecee-4ba7-ad67-4687165d4f3c",
+                            Ballance = 10000f,
+                            ConcurrencyStamp = "15c8b620-ffe7-45b1-b2f5-5a4dd00566a2",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -394,11 +406,19 @@ namespace aspnetcore.ntier.DAL.Migrations
 
             modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.BoardItem", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.User", "User")
+                    b.HasOne("aspnetcore.ntier.DAL.Entities.Stock", "Stock")
                         .WithMany("BoardItems")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("Stock_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("aspnetcore.ntier.DAL.Entities.User", "User")
+                        .WithMany("BoardItems")
+                        .HasForeignKey("User_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stock");
 
                     b.Navigation("User");
                 });
@@ -407,7 +427,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     b.HasOne("aspnetcore.ntier.DAL.Entities.User", "User")
                         .WithMany("Stocks")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("User_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -463,6 +483,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.Stock", b =>
+                {
+                    b.Navigation("BoardItems");
                 });
 
             modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.User", b =>

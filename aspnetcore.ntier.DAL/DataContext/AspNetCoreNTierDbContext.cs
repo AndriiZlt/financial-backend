@@ -12,7 +12,7 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
     public DbSet<User> Users { get; set; }
 
     public DbSet<Stock> Stocks { get; set; }
-/*    public DbSet<BoardItem> BoardStocks { get; set; }*/
+    public DbSet<BoardItem> BoardStocks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,6 +28,7 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
                  Password = "zxc",
                  Name = "Andrii",
                  Surname = "Doe",
+                 Ballance=10000,
              },
              new User
              {
@@ -37,26 +38,27 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
                 Password = "zxc",
                 Name = "Mykola",
                 Surname = "Doe",
+                Ballance = 10000,
              }
          );
 
-/*        modelBuilder.Entity<Stock>()
-            .HasOne(s => s.BoardStock)
-            .WithOne(t => t.Stock)
-            .HasForeignKey<BoardItem>(t=>t.Stock_Id)
-            .IsRequired();*/
+        modelBuilder.Entity<BoardItem>()
+            .HasOne(s => s.Stock)
+            .WithMany(t => t.BoardItems)
+            .HasForeignKey(t => t.Stock_Id)
+            .IsRequired();
 
         modelBuilder.Entity<Stock>()
             .HasOne(s => s.User)
             .WithMany(t => t.Stocks)
-            .HasForeignKey(t => t.UserId)
+            .HasForeignKey(t => t.User_Id)
             .IsRequired();
 
-/*        modelBuilder.Entity<BoardItem>()
+        modelBuilder.Entity<BoardItem>()
             .HasOne(s => s.User)
             .WithMany(t => t.BoardItems)
             .HasForeignKey(t => t.User_Id)
-            .IsRequired();*/
+            .IsRequired();
 
 
     }

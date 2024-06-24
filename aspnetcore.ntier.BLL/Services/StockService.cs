@@ -54,10 +54,10 @@ namespace aspnetcore.ntier.BLL.Services
         {
             Log.Information("Stock to ADD: {@stockId}", stockToAddDTO);
             var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Alpaca_Asset_Id == stockToAddDTO.Alpaca_Asset_Id && x.UserId.ToString()== userId));
+            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Alpaca_Asset_Id == stockToAddDTO.Alpaca_Asset_Id && x.User_Id.ToString()== userId));
             if (stockToUpdate == null)
             {
-                stockToAddDTO.UserId = Int32.Parse(userId);
+                stockToAddDTO.User_Id = Int32.Parse(userId);
                 var stock = _mapper.Map<Stock>(stockToAddDTO);
                 var addedStock = await _stockRepository.AddAsync(_mapper.Map<Stock>(stockToAddDTO));
                 Log.Information("Added Stock: {@stockId}", addedStock);
@@ -112,7 +112,17 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<StockDTO> BuyStockAsync(string stockId)
         {
-            Log.Information("Buying stock ID: {Id}", stockId);
+
+/* 1. 
+ * Check if user has already this stock
+ if yes - update it's quantity and 
+
+
+
+ if not - create stock 
+ 
+ 
+ */
             var stockToUpdate = await _stockRepository.GetAsync(x => x.Id.ToString() == stockId);
             if (stockToUpdate is null)
             {
@@ -120,7 +130,7 @@ namespace aspnetcore.ntier.BLL.Services
                 throw new KeyNotFoundException();
             }
             var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            stockToUpdate.UserId = Int32.Parse(userId);
+            stockToUpdate.User_Id = Int32.Parse(userId);
             stockToUpdate.Status = StockStatus.Fixed;
             var stock = _mapper.Map<Stock>(stockToUpdate);
 
