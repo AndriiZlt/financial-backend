@@ -11,7 +11,7 @@ public class BoardItemToAddDTO
     public string? Cost_Basis { get; set; }
     public string? Qty { get; set; }
     public string? Max_Qty { get; set; }
-    public StockStatus? Status { get; set; }
+    public StockStatus Status { get; set; }
 
 }
 

@@ -1,16 +1,12 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DAL.Entities;
-using aspnetcore.ntier.DAL.Repositories;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 
 
@@ -44,17 +40,11 @@ namespace aspnetcore.ntier.BLL.Services
             return _mapper.Map<List<StockDTO>>(stocksToReturn);
         }
 
-        public async Task<List<StockDTO>> GetBoardAsync(CancellationToken cancellationToken = default)
-        {
-            var stocksToReturn = await _stockRepository.GetBoardListAsync();
-            return _mapper.Map<List<StockDTO>>(stocksToReturn);
-        }
-
         public async Task<StockDTO> AddStockAsync([FromBody] StockToAddDTO stockToAddDTO)
         {
             Log.Information("Stock to ADD: {@stockId}", stockToAddDTO);
             var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Alpaca_Asset_Id == stockToAddDTO.Alpaca_Asset_Id && x.User_Id.ToString()== userId));
+            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Symbol == stockToAddDTO.Symbol && x.User_Id.ToString()== userId));
             if (stockToUpdate == null)
             {
                 stockToAddDTO.User_Id = Int32.Parse(userId);
@@ -71,25 +61,7 @@ namespace aspnetcore.ntier.BLL.Services
                 return _mapper.Map<StockDTO>(updatedStock);
 
             }
-
-
-
         }
-
- 
-
-/*        public async Task DeleteTaskAsync(int taskId)
-        {
-            var taskToDelete = await _stockRepository.GetAsync(x => x.Id == taskId);
-
-            if (taskToDelete is null)
-            {
-                Log.Information("Task with taskId = {TaskId} was not found", taskId);
-                throw new KeyNotFoundException();
-            }
-
-            await _stockRepository.DeleteAsync(taskToDelete);
-        }*/
 
         public async Task<StockDTO> UpdateStatusAsync(int stockId, StockStatus status)
         {
@@ -113,16 +85,6 @@ namespace aspnetcore.ntier.BLL.Services
         public async Task<StockDTO> BuyStockAsync(string stockId)
         {
 
-/* 1. 
- * Check if user has already this stock
- if yes - update it's quantity and 
-
-
-
- if not - create stock 
- 
- 
- */
             var stockToUpdate = await _stockRepository.GetAsync(x => x.Id.ToString() == stockId);
             if (stockToUpdate is null)
             {
@@ -139,15 +101,7 @@ namespace aspnetcore.ntier.BLL.Services
             return _mapper.Map<StockDTO>(await _stockRepository.BuyStockAsync(stock));
         }
 
-        public Task DeleteTaskAsync(int taskId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<StockDTO> UpdateStockAsync(StockDTO stock)
-        {
-            throw new NotImplementedException();
-        }
 
         /*public async Task<StockDTO> BuyStockAsync(StockDTO updatedStock)
         {
@@ -165,7 +119,6 @@ namespace aspnetcore.ntier.BLL.Services
 
             return _mapper.Map<StockDTO>(await _stockRepository.UpdateStockAsync(stockAfterUpdate));
         }*/
-
 
 
 

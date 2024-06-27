@@ -21,7 +21,7 @@ namespace aspnetcore.ntier.BLL.Services.IServices
         Task<OrderToReturn> CreateOrdersAsync(string keyId, string secretKey, OrderDTO order);
         Task<PositionToReturn> ClosePositionAsync(string keyId, string secretKey, string asset_id);
         Task<TradeToReturn> GetTradesAsync(string keyId, string secretKey, string symbol);
-        Task<BarToReturn> GetLastBarAsync(string keyId, string secretKey , string symbol);
+        Task<BarToReturn> GetLastBarAsync(string keyId, string secretKey, string symbol);
 
 
     }

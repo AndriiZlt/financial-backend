@@ -30,7 +30,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetAssets controller", ex);
+            Log.Error("An unexpected error occurred in GetAssets controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
@@ -49,7 +49,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetAsset controller", ex);
+            Log.Error("An unexpected error occurred in GetAsset controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
@@ -68,7 +68,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetPositions controller", ex);
+            Log.Error("An unexpected error occurred in GetPositions controller. {@ex}", ex);
 
             return BadRequest("Something went wrong");
         }
@@ -88,7 +88,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in ClosePosition controller", ex);
+            Log.Error("An unexpected error occurred in ClosePosition controller. {@ex}", ex);
 
             return BadRequest("Something went wrong");
         }
@@ -108,7 +108,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetTransactions controller", ex);
+            Log.Error("An unexpected error occurred in GetTransactions controller. {@ex}", ex);
 
             return BadRequest("Something went wrong");
         }
@@ -128,7 +128,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetMonthBars controller", ex);
+            Log.Error("An unexpected error occurred in GetMonthBars controller. {@ex}", ex);
 
             return BadRequest("Something went wrong");
         }
@@ -148,7 +148,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetAccount controller", ex);
+            Log.Error("An unexpected error occurred in GetAccount controller. {@ex}", ex);
 
             return BadRequest("Something went wrong");
         }
@@ -168,7 +168,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetOrders controller", ex);
+            Log.Error("An unexpected error occurred in GetOrders controller. {@ex}", ex);
 
             return BadRequest("Something went wrong");
         }
@@ -188,7 +188,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in CreateOrder controller", ex);
+            Log.Error("An unexpected error occurred in CreateOrder controller. {@ex}", ex);
 
             return BadRequest("Something went wrong");
         }
@@ -208,7 +208,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetTrades controller", ex);
+            Log.Error("An unexpected error occurred in GetTrades controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
@@ -227,7 +227,7 @@ public class AlpacaController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetLastBar controller", ex);
+            Log.Error("An unexpected error occurred in GetLastBar controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }

@@ -15,16 +15,13 @@ public static class AutoMapperProfiles
             CreateMap<User, UserToUpdateDTO>().ReverseMap();
             CreateMap<User, UserToRegisterDTO>().ReverseMap();
             CreateMap<User, UserToReturnDTO>().ReverseMap();
-            CreateMap<Taskk, TaskDTO>().ReverseMap();
-            CreateMap<Taskk, TaskToAddDTO>().ReverseMap();
-            CreateMap<Subtask, SubtaskDTO>().ReverseMap();
-            CreateMap<Subtask, SubtaskToAddDTO>().ReverseMap();
-            CreateMap<Friend, FriendDTO>().ReverseMap();
-            CreateMap<Friend, FriendToAddDTO>().ReverseMap();
             CreateMap<Stock, StockToAddDTO>().ReverseMap();
             CreateMap<Stock, StockDTO>().ReverseMap();
             CreateMap<BoardItem, BoardItemDTO>().ReverseMap();
             CreateMap<BoardItem, BoardItemToAddDTO>().ReverseMap();
+            CreateMap<Transaction, TransactionToAddDTO>().ReverseMap();
+            CreateMap<Transaction, TransactionDTO>().ReverseMap();
+            CreateMap<TransactionToAddDTO, TransactionFrontendDTO>().ReverseMap();
         }
     }
 }

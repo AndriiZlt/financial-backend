@@ -5,7 +5,7 @@ namespace aspnetcore.ntier.BLL.Services.IServices;
 
 public interface IBoardService
 {
-    Task<List<StockDTO>> GetBoardAsync(CancellationToken cancellationToken = default);
+    Task<List<BoardItemDTO>> GetBoardAsync(CancellationToken cancellationToken = default);
 
     Task<BoardItemDTO> AddToBoardAsync(BoardItemToAddDTO stockToAddDTO);
 

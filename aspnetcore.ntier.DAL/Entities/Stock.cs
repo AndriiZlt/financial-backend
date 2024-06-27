@@ -6,7 +6,6 @@ namespace aspnetcore.ntier.DAL.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string Alpaca_Asset_Id {  get; set; }
         [Required]
         public int User_Id { get; set; }
         public string Exchange { get; set; }
@@ -16,7 +15,7 @@ namespace aspnetcore.ntier.DAL.Entities
         public string Qty { get; set; }
         public StockStatus Status { get; set; }
         public User User { get; set; }
-        public ICollection<BoardItem>? BoardItems { get; set; }
+        public BoardItem BoardItem { get; set; }
     }
 
     public enum StockStatus

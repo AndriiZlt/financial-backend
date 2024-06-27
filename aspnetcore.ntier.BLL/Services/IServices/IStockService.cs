@@ -9,15 +9,11 @@ public interface IStockService
 {
     Task<List<StockDTO>> GetStocksAsync(CancellationToken cancellationToken = default);
 
-    Task<List<StockDTO>> GetBoardAsync(CancellationToken cancellationToken = default);
-
     Task<StockDTO> AddStockAsync(StockToAddDTO stockToAddDTO);
-
-    Task DeleteTaskAsync(int taskId);
 
     Task<StockDTO> UpdateStatusAsync(int stockId, StockStatus status);
 
-    Task<StockDTO> UpdateStockAsync(StockDTO stock);
+/*    Task<StockDTO> UpdateStockAsync(StockDTO stock);*/
 
     Task<StockDTO> BuyStockAsync(string stockId);
 }

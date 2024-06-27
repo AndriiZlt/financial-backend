@@ -10,9 +10,9 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
     public AspNetCoreNTierDbContext(DbContextOptions<AspNetCoreNTierDbContext> options) : base(options) { }
 
     public DbSet<User> Users { get; set; }
-
     public DbSet<Stock> Stocks { get; set; }
-    public DbSet<BoardItem> BoardStocks { get; set; }
+    public DbSet<BoardItem> BoardItems { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,10 +42,10 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
              }
          );
 
-        modelBuilder.Entity<BoardItem>()
-            .HasOne(s => s.Stock)
-            .WithMany(t => t.BoardItems)
-            .HasForeignKey(t => t.Stock_Id)
+        modelBuilder.Entity<Stock>()
+            .HasOne(s => s.BoardItem)
+            .WithOne(t => t.Stock)
+            .HasForeignKey<BoardItem>(t => t.Stock_Id)
             .IsRequired();
 
         modelBuilder.Entity<Stock>()
@@ -60,6 +60,10 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
             .HasForeignKey(t => t.User_Id)
             .IsRequired();
 
-
+        modelBuilder.Entity<Transaction>()
+            .HasOne(t => t.User)
+            .WithMany(u => u.Transactions)
+            .HasForeignKey(t => t.User_Id)
+            .IsRequired();
     }
 }

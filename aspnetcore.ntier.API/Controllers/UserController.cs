@@ -32,7 +32,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetUsers controller", ex);
+            Log.Error("An unexpected error occurred in GetUsers controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
@@ -50,12 +50,12 @@ public class UserController : ControllerBase
         }
         catch (UserNotFoundException ex)
         {
-            Log.Error("UserNotFoundException in GetUser controller", ex);
+            Log.Error("UserNotFoundException in GetUser controller. {@ex}", ex);
             return NotFound("User not found");
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetUser controller", ex);
+            Log.Error("An unexpected error occurred in GetUser controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
@@ -73,7 +73,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in AddUser controller", ex);
+            Log.Error("An unexpected error occurred in AddUser controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
@@ -91,12 +91,12 @@ public class UserController : ControllerBase
         }
         catch (UserNotFoundException ex)
         {
-            Log.Error("UserNotFoundException in UpdateUser controller", ex);
+            Log.Error("UserNotFoundException in UpdateUser controller. {@ex}", ex);
             return NotFound("User not found");
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in UpdateUser controller", ex);
+            Log.Error("An unexpected error occurred in UpdateUser controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
@@ -115,12 +115,12 @@ public class UserController : ControllerBase
         }
         catch (UserNotFoundException ex)
         {
-            Log.Error("UserNotFoundException in DeleteUser controller", ex);
+            Log.Error("UserNotFoundException in DeleteUser controller. {@ex}", ex);
             return NotFound("User not found");
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in DeleteUser controller", ex);
+            Log.Error("An unexpected error occurred in DeleteUser controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }
