@@ -1,5 +1,7 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.BLL.Utilities.CustomExceptions;
 using aspnetcore.ntier.DAL.Entities;
+using aspnetcore.ntier.DAL.Repositories;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
@@ -40,6 +42,20 @@ namespace aspnetcore.ntier.BLL.Services
             return _mapper.Map<List<StockDTO>>(stocksToReturn);
         }
 
+        public async Task<StockDTO> GetStockAsync(int stockId, CancellationToken cancellationToken = default)
+        {
+
+            var stockToReturn = await _stockRepository.GetAsync(x => x.Id == stockId, cancellationToken);
+
+            if (stockToReturn is null)
+            {
+                Log.Error("Stock with Id = {UserId} was not found", stockId);
+                throw new KeyNotFoundException();
+            }
+
+            return _mapper.Map<StockDTO>(stockToReturn);
+        }
+
         public async Task<StockDTO> AddStockAsync([FromBody] StockToAddDTO stockToAddDTO)
         {
             Log.Information("Stock to ADD: {@stockId}", stockToAddDTO);
@@ -61,6 +77,22 @@ namespace aspnetcore.ntier.BLL.Services
                 return _mapper.Map<StockDTO>(updatedStock);
 
             }
+        }
+
+        public async Task<StockDTO> UpdateStockAsync(int stockId, StockDTO stockForUpdate)
+        {
+            var stockToUpdate = await _stockRepository.GetAsync(x => x.Id == stockId);
+            if (stockToUpdate is null)
+            {
+                Log.Information("Stock with Id = {Id} was not found", stockId);
+                throw new KeyNotFoundException();
+            }
+
+            var updatedStock = _mapper.Map<Stock>(stockForUpdate);
+
+            Log.Information("Updated stock OK:  {@stock} ", updatedStock);
+
+            return _mapper.Map<StockDTO>(await _stockRepository.UpdateAsync(updatedStock));
         }
 
         public async Task<StockDTO> UpdateStatusAsync(int stockId, StockStatus status)

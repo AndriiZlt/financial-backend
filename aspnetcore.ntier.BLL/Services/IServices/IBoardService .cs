@@ -9,7 +9,7 @@ public interface IBoardService
 
     Task<BoardItemDTO> AddToBoardAsync(BoardItemToAddDTO stockToAddDTO);
 
-/*    Task RemoveFromBoardAsync(int stockId);*/
+    Task DeleteBoardItemAsync(int stock_Id);
 
 /*    Task<SubtaskDTO> UpdateStatusSubtaskAsync(int taskId);
 

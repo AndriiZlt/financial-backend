@@ -48,11 +48,11 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [HttpPost("addtransaction")]
-        public async Task<IActionResult> AddTransaction(TransactionFrontendDTO transactionFrontend)
+        public async Task<IActionResult> AddTransaction(TransactionToAddDTO transactionToAdd)
         {
             try
             {
-                return Ok(await _transactionService.AddTransactionAsync(transactionFrontend));
+                return Ok(await _transactionService.AddTransactionAsync(transactionToAdd));
             }
             catch (Exception ex)
             {

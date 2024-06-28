@@ -40,12 +40,31 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<BoardItemDTO> AddToBoardAsync([FromBody] BoardItemToAddDTO boardItemToAdd)
         {
+            Log.Information("boardItemToAdd = {@UserId}", boardItemToAdd);
             var addedItem = await _boardRepository.AddAsync(_mapper.Map<BoardItem>(boardItemToAdd));
-            var updatedStock = await _stockService.UpdateStatusAsync(addedItem.Stock_Id, boardItemToAdd.Status);
+            if(boardItemToAdd.Status == StockStatus.For_Sale)
+            {
+                var updatedStock = await _stockService.UpdateStatusAsync(addedItem.Stock_Id, boardItemToAdd.Status);
+            }
+
             return _mapper.Map<BoardItemDTO>(addedItem);
         }
 
-     
+        public async Task DeleteBoardItemAsync(int stock_Id)
+        {
+            var itemToDelete = await _boardRepository.GetAsync(x => x.Stock_Id == stock_Id);
+
+            if (itemToDelete is null)
+            {
+                Log.Information("BoardItem with StockId = {UserId} was not found", stock_Id);
+                throw new KeyNotFoundException();
+            }
+
+            await _boardRepository.DeleteAsync(itemToDelete);
+        }
+
+
+
 
     }
 }

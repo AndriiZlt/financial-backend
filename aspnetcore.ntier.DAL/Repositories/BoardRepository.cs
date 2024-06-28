@@ -34,9 +34,9 @@ namespace aspnetcore.ntier.DAL.Repositories
             return boardItem;
         }
 
-        public async Task<int> DeleteAsync(BoardItem stock)
+        public async Task<int> DeleteAsync(BoardItem boardItem)
         {
-            _ = _aspNetCoreNTierDbContext.Remove(stock);
+            _ = _aspNetCoreNTierDbContext.Remove(boardItem);
             return await _aspNetCoreNTierDbContext.SaveChangesAsync();
         }
 

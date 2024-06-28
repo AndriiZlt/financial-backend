@@ -49,6 +49,26 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Stock_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Seller_User_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Buyer_User_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Symbol = table.Column<string>(type: "TEXT", nullable: false),
+                    Transaction_Time = table.Column<string>(type: "TEXT", nullable: false),
+                    Price = table.Column<string>(type: "TEXT", nullable: false),
+                    Qty = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -191,7 +211,6 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     User_Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    Exchange = table.Column<string>(type: "TEXT", nullable: false),
                     Symbol = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Cost_Basis = table.Column<string>(type: "TEXT", nullable: false),
@@ -210,25 +229,24 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transactions",
+                name: "UserTransaction",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    User_Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    Other_Side_User_Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    Symbol = table.Column<string>(type: "TEXT", nullable: false),
-                    Transaction_Time = table.Column<string>(type: "TEXT", nullable: false),
-                    Price = table.Column<string>(type: "TEXT", nullable: false),
-                    Qty = table.Column<string>(type: "TEXT", nullable: false),
-                    Side = table.Column<int>(type: "INTEGER", nullable: false)
+                    TransactionsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UsersId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.PrimaryKey("PK_UserTransaction", x => new { x.TransactionsId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_Transactions_Users_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_UserTransaction_Transactions_TransactionsId",
+                        column: x => x.TransactionsId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserTransaction_Users_UsersId",
+                        column: x => x.UsersId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -269,12 +287,12 @@ namespace aspnetcore.ntier.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, 10000f, "7ba2f47d-842b-45a0-987f-b2a9d2a7cffc", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
+                values: new object[] { 1, 0, 10000f, "6347a8bd-a17c-4ae4-92ba-9c0f421703aa", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 2, 0, 10000f, "6927fc5f-bc4f-4386-958e-707f9328f8dc", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
+                values: new object[] { 2, 0, 10000f, "7ae1c915-a350-4979-a419-5d8edf5f3276", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -330,9 +348,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                 column: "User_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_User_Id",
-                table: "Transactions",
-                column: "User_Id");
+                name: "IX_UserTransaction_UsersId",
+                table: "UserTransaction",
+                column: "UsersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -356,7 +374,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "BoardItems");
 
             migrationBuilder.DropTable(
-                name: "Transactions");
+                name: "UserTransaction");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -366,6 +384,9 @@ namespace aspnetcore.ntier.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Stocks");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -8,12 +8,13 @@ namespace aspnetcore.ntier.BLL.Services.IServices;
 public interface IStockService
 {
     Task<List<StockDTO>> GetStocksAsync(CancellationToken cancellationToken = default);
+    Task<StockDTO> GetStockAsync(int stockId, CancellationToken cancellationToken = default);
 
     Task<StockDTO> AddStockAsync(StockToAddDTO stockToAddDTO);
 
     Task<StockDTO> UpdateStatusAsync(int stockId, StockStatus status);
 
-/*    Task<StockDTO> UpdateStockAsync(StockDTO stock);*/
+    Task<StockDTO> UpdateStockAsync(int stockId, StockDTO stockForUpdate);
 
     Task<StockDTO> BuyStockAsync(string stockId);
 }

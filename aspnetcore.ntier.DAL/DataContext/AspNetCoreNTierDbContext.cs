@@ -42,6 +42,11 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
              }
          );
 
+        modelBuilder.Entity<Transaction>()
+            .HasMany(t => t.Users)
+            .WithMany(u => u.Transactions)
+            .UsingEntity(j => j.ToTable("UserTransaction"));
+
         modelBuilder.Entity<Stock>()
             .HasOne(s => s.BoardItem)
             .WithOne(t => t.Stock)
@@ -60,10 +65,6 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
             .HasForeignKey(t => t.User_Id)
             .IsRequired();
 
-        modelBuilder.Entity<Transaction>()
-            .HasOne(t => t.User)
-            .WithMany(u => u.Transactions)
-            .HasForeignKey(t => t.User_Id)
-            .IsRequired();
+
     }
 }

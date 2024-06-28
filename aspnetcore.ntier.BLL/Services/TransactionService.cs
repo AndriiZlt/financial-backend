@@ -18,18 +18,23 @@ namespace aspnetcore.ntier.BLL.Services
         private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IStockService _stockService;
+        private readonly IBoardService _boardService;
 
 
         public TransactionService(
             ITransactionRepository transactionRepository,
             IMapper mapper,
-            IHttpContextAccessor httpContext
+            IHttpContextAccessor httpContext,
+            IStockService stockService,
+            IBoardService boardService
             )
         {
             _transactionRepository = transactionRepository;
             _mapper = mapper;
             _httpContext = httpContext;
-
+            _stockService = stockService;
+            _boardService = boardService;
         }
 
         public async Task<List<TransactionDTO>> GetTransactionsAsync(CancellationToken cancellationToken = default)
@@ -40,37 +45,42 @@ namespace aspnetcore.ntier.BLL.Services
         }
 
 
-        public async Task<TransactionDTO> AddTransactionAsync([FromBody] TransactionFrontendDTO transactionFrontend)
+        public async Task<TransactionDTO> AddTransactionAsync([FromBody] TransactionToAddDTO transactionFrontend)
         {
-            Log.Information("Transaction from Frontend: {@transaction}", transactionFrontend);
-
             var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId != transactionFrontend.Selling_User_Id.ToString() && userId != transactionFrontend.Buying_User_Id.ToString())
+            if (userId != transactionFrontend.Seller_User_Id.ToString() && userId != transactionFrontend.Buyer_User_Id.ToString())
             {
                 Log.Error("Security restriction: Only seller or buyer can add transaction");
                 throw new UnauthorizedAccessException();
             }
 
-            var transactionToAdd = _mapper.Map<TransactionToAddDTO>(transactionFrontend);
+            var transactionToAdd = _mapper.Map<Transaction>(transactionFrontend);
 
-            if (userId == transactionFrontend.Selling_User_Id.ToString())
+            /*Make sure we have anough stocks to sell*/
+            StockDTO stockToUpdate = await _stockService.GetStockAsync(transactionFrontend.Stock_Id);
+            stockToUpdate.Qty = (Int32.Parse(stockToUpdate.Qty) - Int32.Parse(transactionFrontend.Qty)).ToString();
+            stockToUpdate.Status = StockStatus.Fixed;
+            if (Int32.Parse(stockToUpdate.Qty) < 0)
             {
-                transactionToAdd.User_Id = transactionFrontend.Selling_User_Id;
-                transactionToAdd.Other_Side_User_Id = transactionFrontend.Buying_User_Id;
-                transactionToAdd.Side = TransactionSide.Seller;
+                Log.Error("The Stock's quantity is not anough (stock id={stokID})", stockToUpdate.Id);
+                throw new ArgumentOutOfRangeException();
             }
 
-            if (userId == transactionFrontend.Buying_User_Id.ToString())
-            {
-                transactionToAdd.User_Id = transactionFrontend.Buying_User_Id;
-                transactionToAdd.Other_Side_User_Id = transactionFrontend.Selling_User_Id;
-                transactionToAdd.Side = TransactionSide.Buyer;
-            }
+            var addedTransaction = await _transactionRepository.AddAsync(transactionToAdd);
 
-            Log.Information("TransactionToAdd: {@transaction}", transactionToAdd);
-            var transaction = _mapper.Map<Transaction>(transactionToAdd);
-            Log.Information("Transaction: {@transaction}", transaction);
-            var addedTransaction = await _transactionRepository.AddAsync(transaction);
+            /* Creating/updating Stock for Buyer */
+            StockToAddDTO stockToAdd = _mapper.Map<StockToAddDTO>(transactionFrontend);
+            stockToAdd.User_Id = transactionFrontend.Buyer_User_Id;
+            stockToAdd.Cost_Basis = transactionFrontend.Price;
+            stockToAdd.Status = StockStatus.Fixed;
+            await _stockService.AddStockAsync(stockToAdd);
+
+            /* Updating Stock of Seller */
+            await _stockService.UpdateStockAsync(transactionFrontend.Stock_Id, stockToUpdate);
+
+            /*Deleting BoardItem*/
+            await _boardService.DeleteBoardItemAsync(transactionFrontend.Stock_Id);
+
             return _mapper.Map<TransactionDTO>(addedTransaction);
         }
     }

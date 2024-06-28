@@ -7,6 +7,6 @@ namespace aspnetcore.ntier.BLL.Services.IServices
     {
 
         Task<List<TransactionDTO>> GetTransactionsAsync(CancellationToken cancellationToken = default);
-        Task<TransactionDTO> AddTransactionAsync([FromBody] TransactionFrontendDTO transactionToAdd);
+        Task<TransactionDTO> AddTransactionAsync([FromBody] TransactionToAddDTO transactionToAdd);
     }
 }
