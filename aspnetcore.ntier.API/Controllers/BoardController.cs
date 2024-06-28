@@ -1,4 +1,5 @@
 ﻿
+using aspnetcore.ntier.BLL.Services;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ namespace aspnetcore.ntier.API.Controllers
         }
 
 
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -37,7 +39,7 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in GetTasks controller", ex);
+                Log.Error("An unexpected error occurred in GetTasks controller. {@ex}", ex);
                 return BadRequest("Something went wrong");
             }
         }
@@ -51,86 +53,17 @@ namespace aspnetcore.ntier.API.Controllers
         {
             try
             {
-                
                 return Ok(await _boardService.AddToBoardAsync(boardItemToAdd));
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in AddTask controller", ex);
+                Log.Error("An unexpected error occurred in AddToBoardAsync controller. {@ex}", ex);
                 return BadRequest("Something went wrong");
             }
         }
 
 
-        /*[ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPut("updatestatus")]
-        public async Task<IActionResult> UpdateStatusTask(int taskId)
-        {
-            try
-            {
-                return Ok(await _subtaskService.UpdateStatusSubtaskAsync(taskId));
-            }
-            catch (KeyNotFoundException ex)
-            {
-                Log.Error("KeyNotFoundException in UpdateStatusTask controller", ex);
-                return NotFound("Task not found");
-            }
-            catch (Exception ex)
-            {
-                Log.Error("An unexpected error occurred in UpdateStatusTask controller", ex);
-                return BadRequest("Something went wrong");
-            }
-        }*/
        
-
-
-        /*[ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPut("updatesubtask")]
-        public async Task<IActionResult> UpdateTask(SubtaskDTO taskToUpdate)
-        {
-            try
-            {
-                return Ok(await _subtaskService.UpdateSubtaskAsync(taskToUpdate));
-            }
-            catch (KeyNotFoundException ex)
-            {
-                Log.Error("KeyNotFoundException in UpdateTask controller", ex);
-                return NotFound("Task not found");
-            }
-            catch (Exception ex)
-            {
-                Log.Error("An unexpected error occurred in UpdateTask controller", ex);
-                return BadRequest("Something went wrong");
-            }
-        }*/
-
-
-        /*[ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpDelete("removeboard")]
-        public async Task<IActionResult> RemoveItemFromBoard(int stockId)
-        {
-            try
-            {
-                await _boardService.RemoveFromBoardAsync(stockId);
-                return Ok();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                Log.Error("KeyNotFoundException in DeleteSubtaskAsync controller", ex);
-                return NotFound("Task not found");
-            }
-            catch (Exception ex)
-            {
-                Log.Error("An unexpected error occurred in DeleteSubtaskAsync controller", ex);
-                return BadRequest("Something went wrong");
-            }
-        }*/
 
     }
 }

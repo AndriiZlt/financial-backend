@@ -20,11 +20,6 @@ namespace aspnetcore.ntier.DAL.Repositories
             return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t=>t.User_Id == userId).ToListAsync();
         }
 
-        public async Task<List<Stock>> GetBoardListAsync()
-        {
-            return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t => t.Status != StockStatus.Fixed).ToListAsync();
-        }
-
         public async Task<Stock> GetAsync(Expression<Func<Stock, bool>> filter = null, CancellationToken cancellationToken = default)
         {
             return await _aspNetCoreNTierDbContext.Set<Stock>().AsNoTracking().FirstOrDefaultAsync(filter, cancellationToken);
@@ -37,11 +32,6 @@ namespace aspnetcore.ntier.DAL.Repositories
             return stock;
         }
 
-/*        public async Task<int> DeleteAsync(Stock task)
-        {
-            _ = _aspNetCoreNTierDbContext.Remove(task);
-            return await _aspNetCoreNTierDbContext.SaveChangesAsync();
-        }*/
 
         public async Task<Stock> UpdateAsync(Stock stock)
         {
@@ -68,6 +58,7 @@ namespace aspnetcore.ntier.DAL.Repositories
         {
             throw new NotImplementedException();
         }
+
     }
 }
 

@@ -80,7 +80,7 @@ public class UserService : IUserService
         if (userToDelete is null)
         {
             Log.Information("User with userId = {UserId} was not found", userId);
-            throw new UserNotFoundException();
+            throw new ArgumentOutOfRangeException();
         }
 
         await _userRepository.DeleteAsync(userToDelete);
