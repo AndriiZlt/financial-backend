@@ -11,7 +11,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20240628083655_InitialCreate")]
+    [Migration("20240629125020_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Board_Item_Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Buyer_Stock_Id")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Buyer_User_Id")
                         .HasColumnType("INTEGER");
 
@@ -113,10 +119,10 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Seller_User_Id")
+                    b.Property<int>("Seller_Stock_Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Stock_Id")
+                    b.Property<int>("Seller_User_Id")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Symbol")
@@ -207,7 +213,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Ballance = 10000f,
-                            ConcurrencyStamp = "6347a8bd-a17c-4ae4-92ba-9c0f421703aa",
+                            ConcurrencyStamp = "d2ecb4b1-cc64-44bc-b2fa-edb111dc170b",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -223,7 +229,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Ballance = 10000f,
-                            ConcurrencyStamp = "7ae1c915-a350-4979-a419-5d8edf5f3276",
+                            ConcurrencyStamp = "75295668-aa64-4603-90b0-c47944900326",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

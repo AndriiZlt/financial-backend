@@ -50,13 +50,13 @@ namespace aspnetcore.ntier.BLL.Services
             return _mapper.Map<BoardItemDTO>(addedItem);
         }
 
-        public async Task DeleteBoardItemAsync(int stock_Id)
+        public async Task DeleteBoardItemAsync(int boardItemId)
         {
-            var itemToDelete = await _boardRepository.GetAsync(x => x.Stock_Id == stock_Id);
+            var itemToDelete = await _boardRepository.GetAsync(x => x.Id == boardItemId);
 
             if (itemToDelete is null)
             {
-                Log.Information("BoardItem with StockId = {UserId} was not found", stock_Id);
+                Log.Information("BoardItem with Id {UserId} was not found", boardItemId);
                 throw new KeyNotFoundException();
             }
 

@@ -17,7 +17,7 @@ namespace aspnetcore.ntier.DAL.Repositories
         }
         public async Task<List<Stock>> GetListAsync(int userId)
         {
-            return await _aspNetCoreNTierDbContext.Set<Stock>().Where(t=>t.User_Id == userId).ToListAsync();
+            return await _aspNetCoreNTierDbContext.Set<Stock>().AsNoTracking().Where(t=>t.User_Id == userId).ToListAsync();
         }
 
         public async Task<Stock> GetAsync(Expression<Func<Stock, bool>> filter = null, CancellationToken cancellationToken = default)
@@ -36,7 +36,6 @@ namespace aspnetcore.ntier.DAL.Repositories
         public async Task<Stock> UpdateAsync(Stock stock)
         {
             _ = _aspNetCoreNTierDbContext.Update(stock);
-
             await _aspNetCoreNTierDbContext.SaveChangesAsync();
             return stock;
         }

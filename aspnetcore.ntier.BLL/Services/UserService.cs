@@ -47,6 +47,40 @@ public class UserService : IUserService
         return _mapper.Map<UserDTO>(userToReturn);
     }
 
+    public async Task<float> GetUserBallanceAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        var user = await _userRepository.GetAsync(x => x.Id == userId, cancellationToken);
+
+        if (user is null)
+        {
+            Log.Information("User with userId = {UserId} was not found", userId);
+            throw new UserNotFoundException();
+        }
+        Log.Information("Ballance for User with id {UserId} = {@ballance}", userId, user.Ballance);
+        return user.Ballance;
+    }
+
+    public async Task<float> UpdateUserBallanceAsync(int userId, float newBallance, CancellationToken cancellationToken = default)
+    {
+        var userBeforeUpdate = await _userRepository.GetAsync(x => x.Id == userId, cancellationToken);
+
+        if (userBeforeUpdate is null)
+        {
+            Log.Information("User with userId = {UserId} was not found", userId);
+            throw new UserNotFoundException();
+        }
+
+        userBeforeUpdate.Ballance = newBallance; 
+      
+        var userAfterUpdate= _mapper.Map<User>(userBeforeUpdate);
+
+        var updatedUser = await _userRepository.UpdateUserAsync(userAfterUpdate);
+
+        Log.Information("Updated ballance for User {UserId} = {ballance}", updatedUser.Id, updatedUser.Ballance);
+
+        return updatedUser.Ballance;
+    }
+
     public async Task<UserDTO> AddUserAsync(UserToAddDTO userToAddDTO)
     {
         userToAddDTO.UserName = userToAddDTO.UserName.ToLower();

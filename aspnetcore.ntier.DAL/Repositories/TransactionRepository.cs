@@ -16,7 +16,7 @@ namespace aspnetcore.ntier.DAL.Repositories
         }
         public async Task<List<Transaction>> GetListAsync(int userId)
         {
-            return await _aspNetCoreNTierDbContext.Set<Transaction>().Where(t => t.Seller_User_Id == userId || t.Buyer_User_Id == userId).ToListAsync();
+            return await _aspNetCoreNTierDbContext.Set<Transaction>().AsNoTracking().Where(t => t.Seller_User_Id == userId || t.Buyer_User_Id == userId).ToListAsync();
         }
 
 
