@@ -54,9 +54,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Stock_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Seller_Stock_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Buyer_Stock_Id = table.Column<int>(type: "INTEGER", nullable: false),
                     Seller_User_Id = table.Column<int>(type: "INTEGER", nullable: false),
                     Buyer_User_Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Board_Item_Id = table.Column<int>(type: "INTEGER", nullable: false),
                     Symbol = table.Column<string>(type: "TEXT", nullable: false),
                     Transaction_Time = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<string>(type: "TEXT", nullable: false),
@@ -287,12 +289,12 @@ namespace aspnetcore.ntier.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, 10000f, "6347a8bd-a17c-4ae4-92ba-9c0f421703aa", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
+                values: new object[] { 1, 0, 10000f, "d2ecb4b1-cc64-44bc-b2fa-edb111dc170b", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 2, 0, 10000f, "7ae1c915-a350-4979-a419-5d8edf5f3276", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
+                values: new object[] { 2, 0, 10000f, "75295668-aa64-4603-90b0-c47944900326", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

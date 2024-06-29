@@ -40,7 +40,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default)
     {
-        return await (filter == null ? _aspNetCoreNTierDbContext.Set<TEntity>().ToListAsync(cancellationToken) : _aspNetCoreNTierDbContext.Set<TEntity>().Where(filter).ToListAsync(cancellationToken));
+        return await (filter == null ? _aspNetCoreNTierDbContext.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken) : _aspNetCoreNTierDbContext.Set<TEntity>().Where(filter).ToListAsync(cancellationToken));
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)

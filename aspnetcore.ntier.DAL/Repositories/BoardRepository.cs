@@ -18,13 +18,9 @@ namespace aspnetcore.ntier.DAL.Repositories
         }
         public async Task<List<BoardItem>> GetBoardListAsync()
         {
-            return await _aspNetCoreNTierDbContext.Set<BoardItem>().Where(t => t.Status != StockStatus.Fixed).ToListAsync();
+            return await _aspNetCoreNTierDbContext.Set<BoardItem>().AsNoTracking().Where(t => t.Status != StockStatus.Fixed).ToListAsync();
         }
 
-        /*        public async Task<BoardStock> GetAsync(Expression<Func<BoardStock, bool>> filter = null, CancellationToken cancellationToken = default)
-                {
-                    return await _aspNetCoreNTierDbContext.Set<Subtask>().AsNoTracking().FirstOrDefaultAsync(filter, cancellationToken);
-                }*/
 
         public async Task<BoardItem> AddAsync(BoardItem boardItem)
         {

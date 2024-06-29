@@ -42,6 +42,13 @@ namespace aspnetcore.ntier.BLL.Services
             return _mapper.Map<List<StockDTO>>(stocksToReturn);
         }
 
+        public async Task<List<StockDTO>> GetStocksAsync(int userId,  CancellationToken cancellationToken = default)
+        {
+            var stocksToReturn = await _stockRepository.GetListAsync(userId);
+            Log.Information("GetStocksAsync {@stockId}", userId);
+            return _mapper.Map<List<StockDTO>>(stocksToReturn);
+        }
+
         public async Task<StockDTO> GetStockAsync(int stockId, CancellationToken cancellationToken = default)
         {
 
@@ -79,10 +86,33 @@ namespace aspnetcore.ntier.BLL.Services
             }
         }
 
+        public async Task<StockDTO> UpdateOrAddStockAsync([FromBody] StockToAddDTO stockToAddDTO)
+        {
+            Log.Information("UpdateOrAddStock: {@stockId}", stockToAddDTO);
+            var userId = stockToAddDTO.User_Id;
+            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Symbol == stockToAddDTO.Symbol && x.User_Id == userId));
+            if (stockToUpdate == null)
+            {
+                var stock = _mapper.Map<Stock>(stockToAddDTO);
+                var addedStock = await _stockRepository.AddAsync(_mapper.Map<Stock>(stockToAddDTO));
+                Log.Information("Added Stock: {@stockId}", addedStock);
+                return _mapper.Map<StockDTO>(addedStock);
+            }
+            else
+            {
+                stockToUpdate.Qty = (Int32.Parse(stockToUpdate.Qty) + Int32.Parse(stockToAddDTO.Qty)).ToString();
+                stockToUpdate.Status = stockToAddDTO.Status;
+                var updatedStock = await _stockRepository.UpdateAsync(_mapper.Map<Stock>(stockToUpdate));
+                Log.Information("Stock updated: {@stockId}", updatedStock);
+                return _mapper.Map<StockDTO>(updatedStock);
+
+            }
+        }
+
         public async Task<StockDTO> UpdateStockAsync(int stockId, StockDTO stockForUpdate)
         {
             var stockToUpdate = await _stockRepository.GetAsync(x => x.Id == stockId);
-            if (stockToUpdate is null)
+            if (stockToUpdate == null)
             {
                 Log.Information("Stock with Id = {Id} was not found", stockId);
                 throw new KeyNotFoundException();
@@ -109,7 +139,7 @@ namespace aspnetcore.ntier.BLL.Services
 
             var stock = _mapper.Map<Stock>(stockToUpdate);
 
-            Log.Information("Stock {@stock} has been updated", stockToUpdate);
+            Log.Information("Updated Stock {@stock}", stockToUpdate);
 
             return _mapper.Map<StockDTO>(await _stockRepository.UpdateAsync(stock));
         }
