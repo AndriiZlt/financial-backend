@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
         }
         catch (UserNotFoundException ex)
         {
-            Log.Error("UserNotFoundException in Login controller", ex);
+            Log.Error("UserNotFoundException in Login controller. {@ex}", ex);
             return Unauthorized();
         }
         catch (Exception ex)
@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in Register controller", ex);
+            Log.Error("An unexpected error occurred in Register controller. {@ex}", ex);
             return BadRequest("Something went wrong");
         }
     }

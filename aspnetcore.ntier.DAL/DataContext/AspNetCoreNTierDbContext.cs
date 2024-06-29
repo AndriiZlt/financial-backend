@@ -10,9 +10,9 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
     public AspNetCoreNTierDbContext(DbContextOptions<AspNetCoreNTierDbContext> options) : base(options) { }
 
     public DbSet<User> Users { get; set; }
-
     public DbSet<Stock> Stocks { get; set; }
-    public DbSet<BoardItem> BoardStocks { get; set; }
+    public DbSet<BoardItem> BoardItems { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,10 +42,15 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
              }
          );
 
-        modelBuilder.Entity<BoardItem>()
-            .HasOne(s => s.Stock)
-            .WithMany(t => t.BoardItems)
-            .HasForeignKey(t => t.Stock_Id)
+        modelBuilder.Entity<Transaction>()
+            .HasMany(t => t.Users)
+            .WithMany(u => u.Transactions)
+            .UsingEntity(j => j.ToTable("UserTransaction"));
+
+        modelBuilder.Entity<Stock>()
+            .HasOne(s => s.BoardItem)
+            .WithOne(t => t.Stock)
+            .HasForeignKey<BoardItem>(t => t.Stock_Id)
             .IsRequired();
 
         modelBuilder.Entity<Stock>()

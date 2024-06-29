@@ -14,7 +14,7 @@ namespace aspnetcore.ntier.DAL.Entities
         public string Qty { get; set; }
         public StockStatus Status { get; set; }
         public User User { get; set; }
-        public ICollection<BoardItem>? BoardItems { get; set; }
+        public BoardItem BoardItem { get; set; }
     }
 
     public enum StockStatus
