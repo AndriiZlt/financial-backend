@@ -5,9 +5,7 @@ namespace aspnetcore.ntier.DAL.Entities
     {
         public int Id { get; set; }
         public int Stock_Id { get; set; }
-        public string Alpaca_Asset_Id { get; set; }
         public int User_Id { get; set; }
-        public string Exchange { get; set; }
         public string? Symbol { get; set; }
         public string? Name { get; set; }
         public string? Cost_Basis { get; set; }

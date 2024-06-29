@@ -54,7 +54,7 @@ namespace aspnetcore.ntier.BLL.Services
         {
             Log.Information("Stock to ADD: {@stockId}", stockToAddDTO);
             var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Alpaca_Asset_Id == stockToAddDTO.Alpaca_Asset_Id && x.User_Id.ToString()== userId));
+            var stockToUpdate = await _stockRepository.GetAsync(x => (x.Symbol == stockToAddDTO.Symbol && x.User_Id.ToString()== userId));
             if (stockToUpdate == null)
             {
                 stockToAddDTO.User_Id = Int32.Parse(userId);

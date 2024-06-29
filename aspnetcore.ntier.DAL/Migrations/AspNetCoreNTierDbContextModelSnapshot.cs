@@ -23,15 +23,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Alpaca_Asset_Id")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Cost_Basis")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Exchange")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Max_Qty")
@@ -70,15 +62,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Alpaca_Asset_Id")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Cost_Basis")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Exchange")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -181,7 +165,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Ballance = 10000f,
-                            ConcurrencyStamp = "670278ba-42df-4adb-a3c2-e8b87fa6cad6",
+                            ConcurrencyStamp = "765de62b-7090-4742-9fbf-35662c713ad7",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -197,7 +181,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Ballance = 10000f,
-                            ConcurrencyStamp = "15c8b620-ffe7-45b1-b2f5-5a4dd00566a2",
+                            ConcurrencyStamp = "35c27ed5-3e7c-4c9f-b105-7f3318685880",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
