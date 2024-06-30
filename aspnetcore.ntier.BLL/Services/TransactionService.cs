@@ -75,7 +75,7 @@ namespace aspnetcore.ntier.BLL.Services
                 throw new ArgumentOutOfRangeException();
             }
 
-            /*Checking seller's stock, quantity and status*/
+            /*Checking seller's stock and quantity*/
             var sellerStocks = await _stockService.GetStocksAsync(transactionFrontend.Seller_User_Id);
             var stockForSale = sellerStocks.FirstOrDefault(s=>s.Symbol == transactionFrontend.Symbol);
             if (stockForSale != null)

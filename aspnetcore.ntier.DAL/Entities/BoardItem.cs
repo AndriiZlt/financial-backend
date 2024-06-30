@@ -11,6 +11,7 @@ namespace aspnetcore.ntier.DAL.Entities
         public string? Cost_Basis { get; set; }
         public string? Qty { get; set; }
         public string? Max_Qty {  get; set; }
+        public string? Total_Price {  get; set; }
         public StockStatus? Status { get; set; }
         public Stock Stock { get; set; }
         public User User { get; set; }
