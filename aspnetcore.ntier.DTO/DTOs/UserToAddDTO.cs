@@ -7,5 +7,5 @@ public class UserToAddDTO
     public string Email { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
-    public float Ballance { get; set; } = 0;
+    public string? Ballance { get; set; } = "0";
 }

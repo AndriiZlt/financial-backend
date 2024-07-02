@@ -47,7 +47,7 @@ public class UserService : IUserService
         return _mapper.Map<UserDTO>(userToReturn);
     }
 
-    public async Task<float> GetUserBallanceAsync(int userId, CancellationToken cancellationToken = default)
+    public async Task<string> GetUserBallanceAsync(int userId, CancellationToken cancellationToken = default)
     {
         var user = await _userRepository.GetAsync(x => x.Id == userId, cancellationToken);
 
@@ -60,7 +60,22 @@ public class UserService : IUserService
         return user.Ballance;
     }
 
-    public async Task<float> UpdateUserBallanceAsync(int userId, float newBallance, CancellationToken cancellationToken = default)
+    public async Task<string> GetUserBallanceAsync(CancellationToken cancellationToken = default)
+    {
+        var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var user = await _userRepository.GetAsync(x => x.Id.ToString() == userId, cancellationToken);
+
+        if (user is null)
+        {
+            Log.Information("User with userId = {UserId} was not found", userId);
+            throw new UserNotFoundException();
+        }
+        Log.Information("Ballance for User with id {UserId} = {@ballance}", userId, user.Ballance);
+        return user.Ballance;
+    }
+
+    public async Task<string> UpdateUserBallanceAsync(int userId, float newBallance, CancellationToken cancellationToken = default)
     {
         var userBeforeUpdate = await _userRepository.GetAsync(x => x.Id == userId, cancellationToken);
 
@@ -70,7 +85,7 @@ public class UserService : IUserService
             throw new UserNotFoundException();
         }
 
-        userBeforeUpdate.Ballance = newBallance; 
+        userBeforeUpdate.Ballance = newBallance.ToString(); 
       
         var userAfterUpdate= _mapper.Map<User>(userBeforeUpdate);
 
@@ -119,4 +134,6 @@ public class UserService : IUserService
 
         await _userRepository.DeleteAsync(userToDelete);
     }
+
+
 }

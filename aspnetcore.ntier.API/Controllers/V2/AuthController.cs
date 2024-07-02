@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in Register controller. {@ex}", ex);
+            Log.Error("An unexpected error occurred in Register controller. {@ex}", ex.Message);
             return BadRequest("Something went wrong");
         }
     }

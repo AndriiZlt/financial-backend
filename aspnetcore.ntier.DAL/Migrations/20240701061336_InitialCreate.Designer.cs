@@ -11,7 +11,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20240629125020_InitialCreate")]
+    [Migration("20240701061336_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Symbol")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Total_Price")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("User_Id")
@@ -108,11 +111,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Property<int>("Buyer_User_Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Cost_Basis")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Price")
-                        .IsRequired()
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Qty")
@@ -126,6 +129,10 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Total_Price")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -147,8 +154,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Ballance")
-                        .HasColumnType("REAL");
+                    b.Property<string>("Ballance")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("TEXT");
@@ -212,8 +220,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            Ballance = 10000f,
-                            ConcurrencyStamp = "d2ecb4b1-cc64-44bc-b2fa-edb111dc170b",
+                            Ballance = "10000",
+                            ConcurrencyStamp = "3a10d4ac-4969-4ad0-9dde-70ab4200e29b",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -228,8 +236,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            Ballance = 10000f,
-                            ConcurrencyStamp = "75295668-aa64-4603-90b0-c47944900326",
+                            Ballance = "10000",
+                            ConcurrencyStamp = "9eb06f81-4d48-43d1-b7ab-5b87b0d9d50f",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

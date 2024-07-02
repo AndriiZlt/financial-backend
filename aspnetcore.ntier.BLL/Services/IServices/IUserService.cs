@@ -9,6 +9,7 @@ public interface IUserService
     Task<UserDTO> AddUserAsync(UserToAddDTO userToAddDTO);
     Task<UserDTO> UpdateUserAsync(UserToUpdateDTO userToUpdateDTO);
     Task DeleteUserAsync(int userId);
-    Task<float> GetUserBallanceAsync(int userId, CancellationToken cancellationToken = default);
-    Task<float> UpdateUserBallanceAsync(int userId, float newBallance, CancellationToken cancellationToken = default);
+    Task<string> GetUserBallanceAsync(int userId, CancellationToken cancellationToken = default);
+    Task<string> GetUserBallanceAsync(CancellationToken cancellationToken = default);
+    Task<string> UpdateUserBallanceAsync(int userId, float newBallance, CancellationToken cancellationToken = default);
 }

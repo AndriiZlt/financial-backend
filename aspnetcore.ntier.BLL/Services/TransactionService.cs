@@ -69,9 +69,9 @@ namespace aspnetcore.ntier.BLL.Services
 
             /*Checking buyer's ballance*/
             var buyerBallance= await this._userService.GetUserBallanceAsync(transactionFrontend.Buyer_User_Id);
-            if (buyerBallance < float.Parse(transactionFrontend.Price)) 
+            if (float.Parse(buyerBallance) < float.Parse(transactionFrontend.Total_Price)) 
             {
-                Log.Error($"Insufficient buyer's ballance! Ballance:{buyerBallance} < Price:{transactionFrontend.Price} ");
+                Log.Error($"Insufficient buyer's ballance! Ballance:{buyerBallance} < Price:{transactionFrontend.Total_Price} ");
                 throw new ArgumentOutOfRangeException();
             }
 
@@ -100,10 +100,11 @@ namespace aspnetcore.ntier.BLL.Services
                 /* Creating/updating the buyer stock */
                 StockToAddDTO stockToAdd = _mapper.Map<StockToAddDTO>(transactionFrontend);
                 stockToAdd.User_Id = transactionFrontend.Buyer_User_Id;
-                stockToAdd.Cost_Basis = transactionFrontend.Price;
                 stockToAdd.Status = StockStatus.Fixed;
+                stockToAdd.Cost_Basis = transactionFrontend.Cost_Basis;
+                stockToAdd.Qty= transactionFrontend.Qty;
                 Log.Information("New updated data for Buyer stock: {@stock}", stockToAdd);
-                var newBuyerStock = _stockService.UpdateOrAddStockAsync(stockToAdd);
+                var newBuyerStock = _stockService.UpdateOrAddNewStockAsync(stockToAdd);
 
                 /* Updating the seller stock */
                 StockDTO stockForUpdate = _mapper.Map<StockDTO>(stockForSale);
@@ -117,8 +118,8 @@ namespace aspnetcore.ntier.BLL.Services
 
                 /* Updating seller's and buyer's ballances */
                 var sellerBallance = await _userService.GetUserBallanceAsync(transactionFrontend.Seller_User_Id);
-                var newSellerBallance = await _userService.UpdateUserBallanceAsync(transactionFrontend.Seller_User_Id, sellerBallance + float.Parse(transactionFrontend.Price));
-                var newBuyerBallance = await _userService.UpdateUserBallanceAsync(transactionFrontend.Buyer_User_Id, buyerBallance - float.Parse(transactionFrontend.Price));
+                var newSellerBallance = await _userService.UpdateUserBallanceAsync(transactionFrontend.Seller_User_Id, float.Parse(sellerBallance) + float.Parse(transactionFrontend.Total_Price));
+                var newBuyerBallance = await _userService.UpdateUserBallanceAsync(transactionFrontend.Buyer_User_Id, float.Parse(buyerBallance) - float.Parse(transactionFrontend.Total_Price));
 
                 /* Creating transaction */
                 var transactionToAdd = _mapper.Map<DAL.Entities.Transaction>(transactionFrontend);
@@ -126,6 +127,8 @@ namespace aspnetcore.ntier.BLL.Services
                 var addedTransaction = await _transactionRepository.AddAsync(transactionToAdd);
 
                 transaction.Commit();
+
+                Log.Information("--- End of transaction ---");
 
                 return _mapper.Map<TransactionDTO>(addedTransaction);
             }

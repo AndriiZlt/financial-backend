@@ -7,4 +7,5 @@ public class UserToUpdateDTO
     public string Email { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
+    public string? Ballance { get; set; }
 }

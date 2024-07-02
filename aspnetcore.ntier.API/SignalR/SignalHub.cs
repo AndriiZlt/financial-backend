@@ -52,7 +52,7 @@ namespace aspnetcore.ntier.API
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in SignalRHub Register function. {@ex}", ex);
+                Log.Error("An unexpected error occurred in SignalRHub Register function. {@ex}", ex.Message);
                 Log.Information($"Error in Register user {userId} with connectionId {currentConnectionId}");
             }
 

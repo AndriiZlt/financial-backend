@@ -32,7 +32,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetUsers controller. {@ex}", ex);
+            Log.Error("An unexpected error occurred in GetUsers controller. {@ex}", ex.Message);
             return BadRequest("Something went wrong");
         }
     }
@@ -50,12 +50,12 @@ public class UserController : ControllerBase
         }
         catch (UserNotFoundException ex)
         {
-            Log.Error("UserNotFoundException in GetUser controller. {@ex}", ex);
+            Log.Error("UserNotFoundException in GetUser controller. {@ex}", ex.Message);
             return NotFound("User not found");
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in GetUser controller. {@ex}", ex);
+            Log.Error("An unexpected error occurred in GetUser controller. {@ex}", ex.Message);
             return BadRequest("Something went wrong");
         }
     }
@@ -73,7 +73,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in AddUser controller. {@ex}", ex);
+            Log.Error("An unexpected error occurred in AddUser controller. {@ex}", ex.Message);
             return BadRequest("Something went wrong");
         }
     }
@@ -91,12 +91,12 @@ public class UserController : ControllerBase
         }
         catch (UserNotFoundException ex)
         {
-            Log.Error("UserNotFoundException in UpdateUser controller. {@ex}", ex);
+            Log.Error("UserNotFoundException in UpdateUser controller. {@ex}", ex.Message);
             return NotFound("User not found");
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in UpdateUser controller. {@ex}", ex);
+            Log.Error("An unexpected error occurred in UpdateUser controller. {@ex}", ex.Message);
             return BadRequest("Something went wrong");
         }
     }
@@ -115,12 +115,34 @@ public class UserController : ControllerBase
         }
         catch (UserNotFoundException ex)
         {
-            Log.Error("UserNotFoundException in DeleteUser controller. {@ex}", ex);
+            Log.Error("UserNotFoundException in DeleteUser controller. {@ex}", ex.Message);
             return NotFound("User not found");
         }
         catch (Exception ex)
         {
-            Log.Error("An unexpected error occurred in DeleteUser controller. {@ex}", ex);
+            Log.Error("An unexpected error occurred in DeleteUser controller. {@ex}", ex.Message);
+            return BadRequest("Something went wrong");
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [HttpGet("getballance")]
+    public async Task<IActionResult> GetBallance()
+    {
+        try
+        {
+            return Ok(await _userService.GetUserBallanceAsync());
+        }
+        catch (UserNotFoundException ex)
+        {
+            Log.Error("UserNotFoundException in DeleteUser controller. {@ex}", ex.Message);
+            return NotFound("User not found");
+        }
+        catch (Exception ex)
+        {
+            Log.Error("An unexpected error occurred in GetBallance controller. {@ex}", ex.Message);
             return BadRequest("Something went wrong");
         }
     }

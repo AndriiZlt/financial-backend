@@ -13,8 +13,9 @@ namespace aspnetcore.ntier.DTO.DTOs
         public int Board_Item_Id { get; set; }
         public string Symbol { get; set; }
         public string Transaction_Time { get; set; }
-        public string Price { get; set; }
+        public string Cost_Basis { get; set; }
         public string Qty { get; set; }
+        public string Total_Price { get; set; }
         public string? Name { get; set; }
 
     }

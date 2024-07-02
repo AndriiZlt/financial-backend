@@ -28,7 +28,7 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
                  Password = "zxc",
                  Name = "Andrii",
                  Surname = "Doe",
-                 Ballance=10000,
+                 Ballance="10000",
              },
              new User
              {
@@ -38,7 +38,7 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
                 Password = "zxc",
                 Name = "Mykola",
                 Surname = "Doe",
-                Ballance = 10000,
+                Ballance = "10000",
              }
          );
 
