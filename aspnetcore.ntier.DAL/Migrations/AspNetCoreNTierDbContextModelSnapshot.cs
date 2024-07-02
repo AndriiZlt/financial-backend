@@ -109,11 +109,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Property<int>("Buyer_User_Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Cost_Basis")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Price")
-                        .IsRequired()
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Qty")
@@ -127,6 +127,10 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Total_Price")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -148,8 +152,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Ballance")
-                        .HasColumnType("REAL");
+                    b.Property<string>("Ballance")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("TEXT");
@@ -213,8 +218,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            Ballance = 10000f,
-                            ConcurrencyStamp = "bef6dbc4-9040-43c8-83a3-7d2e1b39df4e",
+                            Ballance = "10000",
+                            ConcurrencyStamp = "3a10d4ac-4969-4ad0-9dde-70ab4200e29b",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -229,8 +234,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            Ballance = 10000f,
-                            ConcurrencyStamp = "4241f2ec-f183-482b-9a95-990cf28f1f8a",
+                            Ballance = "10000",
+                            ConcurrencyStamp = "9eb06f81-4d48-43d1-b7ab-5b87b0d9d50f",
                             Email = "johndoe@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

@@ -10,7 +10,7 @@ public class User : IdentityUser<int>
     public string Password { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
-    public float Ballance { get; set; }
+    public string Ballance { get; set; }
     public ICollection<Stock> Stocks { get; set; }
     public ICollection<BoardItem> BoardItems { get; set; }
     public ICollection<Transaction> Transactions { get; set; }

@@ -61,8 +61,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Board_Item_Id = table.Column<int>(type: "INTEGER", nullable: false),
                     Symbol = table.Column<string>(type: "TEXT", nullable: false),
                     Transaction_Time = table.Column<string>(type: "TEXT", nullable: false),
-                    Price = table.Column<string>(type: "TEXT", nullable: false),
+                    Cost_Basis = table.Column<string>(type: "TEXT", nullable: false),
                     Qty = table.Column<string>(type: "TEXT", nullable: false),
+                    Total_Price = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -81,7 +82,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
-                    Ballance = table.Column<float>(type: "REAL", nullable: false),
+                    Ballance = table.Column<string>(type: "TEXT", nullable: false),
                     NormalizedUserName = table.Column<string>(type: "TEXT", nullable: true),
                     NormalizedEmail = table.Column<string>(type: "TEXT", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -267,6 +268,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Cost_Basis = table.Column<string>(type: "TEXT", nullable: true),
                     Qty = table.Column<string>(type: "TEXT", nullable: true),
                     Max_Qty = table.Column<string>(type: "TEXT", nullable: true),
+                    Total_Price = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -289,12 +291,12 @@ namespace aspnetcore.ntier.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, 10000f, "d2ecb4b1-cc64-44bc-b2fa-edb111dc170b", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
+                values: new object[] { 1, 0, "10000", "3a10d4ac-4969-4ad0-9dde-70ab4200e29b", "johndoe@gmail.com", false, false, null, "Andrii", null, null, "zxc", null, null, false, null, "Doe", false, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Ballance", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 2, 0, 10000f, "75295668-aa64-4603-90b0-c47944900326", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
+                values: new object[] { 2, 0, "10000", "9eb06f81-4d48-43d1-b7ab-5b87b0d9d50f", "johndoe@gmail.com", false, false, null, "Mykola", null, null, "zxc", null, null, false, null, "Doe", false, "user2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

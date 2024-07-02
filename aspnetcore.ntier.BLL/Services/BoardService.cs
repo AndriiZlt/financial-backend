@@ -40,13 +40,14 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<BoardItemDTO> AddToBoardAsync([FromBody] BoardItemToAddDTO boardItemToAdd)
         {
-            Log.Information("boardItemToAdd = {@UserId}", boardItemToAdd);
+            Log.Information("Board Item to add : {@UserId}", boardItemToAdd);
             var addedItem = await _boardRepository.AddAsync(_mapper.Map<BoardItem>(boardItemToAdd));
             if(boardItemToAdd.Status == StockStatus.For_Sale)
             {
                 var updatedStock = await _stockService.UpdateStatusAsync(addedItem.Stock_Id, boardItemToAdd.Status);
             }
-
+            Log.Information("Added item: {@item}", addedItem);
+            Log.Information("--- End Buy Order ---");
             return _mapper.Map<BoardItemDTO>(addedItem);
         }
 

@@ -37,7 +37,7 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in GetTasks controller. {@ex}", ex);
+                Log.Error("An unexpected error occurred in GetTasks controller. {@ex}", ex.Message);
                 return BadRequest("Something went wrong");
             }
         }
@@ -55,7 +55,25 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in AddTask controller. {@ex}", ex);
+                Log.Error("An unexpected error occurred in AddTask controller. {@ex}", ex.Message);
+                return BadRequest("Something went wrong");
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [HttpPost("createstock")]
+        public async Task<IActionResult> CreateEmptyStock(StockToAddDTO stockToAddDTO)
+        {
+            try
+            {
+                Log.Information("--- New Buy order --- ");
+                return Ok(await _stockService.AddEmptyStockAsync(stockToAddDTO));
+            }
+            catch (Exception ex)
+            {
+                Log.Error("An unexpected error occurred in CreateEmptyStockAsyn controller. {@ex}", ex.Message);
                 return BadRequest("Something went wrong");
             }
         }
@@ -74,12 +92,12 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                Log.Error("KeyNotFoundException in UpdateStockStatus controller. {@ex}", ex);
+                Log.Error("KeyNotFoundException in UpdateStockStatus controller. {@ex}", ex.Message);
                 return NotFound("Task not found");
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in UpdateStatusTask controller", ex);
+                Log.Error("An unexpected error occurred in UpdateStatusTask controller", ex.Message);
                 return BadRequest("Something went wrong");
             }
         }
@@ -97,41 +115,15 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                Log.Error("KeyNotFoundException in UpdateTask controller. {@ex}", ex);
+                Log.Error("KeyNotFoundException in UpdateTask controller. {@ex}", ex.Message);
                 return NotFound("Task not found");
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in UpdateTasks controller. {@ex}", ex);
+                Log.Error("An unexpected error occurred in UpdateTasks controller. {@ex}", ex.Message);
                 return BadRequest("Something went wrong");
             }
         }
-
-
-
-
-        /*[ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpDelete("deletetask/{taskId}")]
-        public async Task<IActionResult> DeleteStock(int taskId)
-        {
-            try
-            {
-                await _stockService.DeleteTaskAsync(taskId);
-                return Ok();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                Log.Error("KeyNotFoundException in DeleteTaskAsync controller", ex);
-                return NotFound("Task not found");
-            }
-            catch (Exception ex)
-            {
-                Log.Error("An unexpected error occurred in DeleteTaskAsync controller", ex);
-                return BadRequest("Something went wrong");
-            }
-        }*/
 
     }
 }

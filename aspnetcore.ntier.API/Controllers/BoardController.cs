@@ -39,7 +39,7 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in GetTasks controller. {@ex}", ex);
+                Log.Error("An unexpected error occurred in GetTasks controller. {@ex}", ex.Message);
                 return BadRequest("Something went wrong");
             }
         }
@@ -57,7 +57,7 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in AddToBoardAsync controller. {@ex}", ex);
+                Log.Error("An unexpected error occurred in AddToBoardAsync controller. {ex}", ex.Message);
                 return BadRequest("Something went wrong");
             }
         }
