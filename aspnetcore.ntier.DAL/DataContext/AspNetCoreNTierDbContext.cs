@@ -18,7 +18,6 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
     {
         base.OnModelCreating(modelBuilder);
 
-
         modelBuilder.Entity<User>().HasData(
              new User
              {
@@ -28,7 +27,7 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
                  Password = "zxc",
                  Name = "Andrii",
                  Surname = "Doe",
-                 Ballance="10000",
+                 Ballance="2000",
              },
              new User
              {
@@ -38,7 +37,17 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
                 Password = "zxc",
                 Name = "Mykola",
                 Surname = "Doe",
-                Ballance = "10000",
+                Ballance = "2000",
+             },
+             new User
+             {
+                 Id = 3,
+                 UserName = "alpaca",
+                 Email = "alpaca@gmail.com",
+                 Password = "zxc",
+                 Name = "Alpaca",
+                 Surname = "API",
+                 Ballance = "1000000",
              }
          );
 
@@ -65,6 +74,10 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
             .HasForeignKey(t => t.User_Id)
             .IsRequired();
 
-
+        modelBuilder.Entity<Notification>()
+            .HasOne(s => s.User)
+            .WithMany(t => t.Notifications)
+            .HasForeignKey(t => t.User_Id)
+            .IsRequired();
     }
 }

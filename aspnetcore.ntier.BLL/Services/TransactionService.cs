@@ -23,6 +23,7 @@ namespace aspnetcore.ntier.BLL.Services
         private readonly IStockService _stockService;
         private readonly IBoardService _boardService;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
         private readonly AspNetCoreNTierDbContext _aspNetCoreNTierDbContext;
 
 
@@ -33,6 +34,7 @@ namespace aspnetcore.ntier.BLL.Services
             IStockService stockService,
             IBoardService boardService,
             IUserService userService,
+            INotificationService notificationService,
             AspNetCoreNTierDbContext aspNetCoreNTierDbContext
             )
         {
@@ -42,6 +44,7 @@ namespace aspnetcore.ntier.BLL.Services
             _stockService = stockService;
             _boardService = boardService;
             _userService = userService;
+            _notificationService = notificationService;
             _aspNetCoreNTierDbContext = aspNetCoreNTierDbContext;
         }
 
@@ -67,15 +70,18 @@ namespace aspnetcore.ntier.BLL.Services
                 throw new UnauthorizedAccessException();
             }
 
-            /*Checking buyer's ballance*/
+            /* Checking buyer's ballance */
             var buyerBallance= await this._userService.GetUserBallanceAsync(transactionFrontend.Buyer_User_Id);
             if (float.Parse(buyerBallance) < float.Parse(transactionFrontend.Total_Price)) 
             {
                 Log.Error($"Insufficient buyer's ballance! Ballance:{buyerBallance} < Price:{transactionFrontend.Total_Price} ");
                 throw new ArgumentOutOfRangeException();
+            } else
+            {
+                Log.Information("Buyer's ballance Ok: {@ballance}", buyerBallance);
             }
 
-            /*Checking seller's stock and quantity*/
+            /* Check seller's stock and quantity */
             var sellerStocks = await _stockService.GetStocksAsync(transactionFrontend.Seller_User_Id);
             var stockForSale = sellerStocks.FirstOrDefault(s=>s.Symbol == transactionFrontend.Symbol);
             if (stockForSale != null)
@@ -84,7 +90,11 @@ namespace aspnetcore.ntier.BLL.Services
                 {
                     Log.Error($"Insufficient stock quantity! Qty:{stockForSale.Qty} < Needed:{transactionFrontend.Qty} ");
                     throw new ArgumentOutOfRangeException();
-                } 
+                }
+                else
+                {
+                    Log.Information("Seller's stock quantity Ok: {@ballance}", stockForSale.Qty);
+                }
             } else
             {
                 Log.Error($"No stock to sell!");
@@ -129,6 +139,10 @@ namespace aspnetcore.ntier.BLL.Services
                 transaction.Commit();
 
                 Log.Information("--- End of transaction ---");
+
+                /* Create notification */
+                await _notificationService.CreateNotificationsFromTransaction(addedTransaction);
+
 
                 return _mapper.Map<TransactionDTO>(addedTransaction);
             }

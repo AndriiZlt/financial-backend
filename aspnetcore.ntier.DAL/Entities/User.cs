@@ -14,5 +14,6 @@ public class User : IdentityUser<int>
     public ICollection<Stock> Stocks { get; set; }
     public ICollection<BoardItem> BoardItems { get; set; }
     public ICollection<Transaction> Transactions { get; set; }
+    public ICollection<Notification> Notifications { get; set; }
 
 }         
