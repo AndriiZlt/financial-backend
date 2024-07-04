@@ -33,6 +33,8 @@ builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IAlpacaService, AlpacaService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<IConnectionService, ConnectionService>();
 builder.Services.AddSignalR();

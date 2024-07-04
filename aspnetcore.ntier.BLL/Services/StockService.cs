@@ -116,27 +116,24 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<StockDTO> UpdateOrAddNewStockAsync([FromBody] StockToAddDTO stockToAddDTO)
         {
-/*            Log.Information("StockToAdd in UpdateOrAdd Buyer's Stock: {@stockId}", stockToAddDTO);*/
             var userId = stockToAddDTO.User_Id;
             var existingStock = await _stockRepository.GetAsync(x => (x.Symbol == stockToAddDTO.Symbol && x.User_Id == userId));
             if (existingStock == null)
             {
-                Log.Information("Create stock for Buyer: {@stockId}", stockToAddDTO);
                 var stock = _mapper.Map<Stock>(stockToAddDTO);
                 var addedStock = await _stockRepository.AddAsync(_mapper.Map<Stock>(stockToAddDTO));
-                Log.Information("Created Stock: {@stockId}", addedStock);
+                Log.Information("Created Stock for Buyer: {@stockId}", addedStock);
                 return _mapper.Map<StockDTO>(addedStock);
             }
             else
             {
-                Log.Information("Update existing stock for Buyer: {@stockId}", stockToAddDTO);
                 /* Calculate new Cost basis */
                 var calcCostBasis= ((Int32.Parse(existingStock.Qty)*float.Parse(existingStock.Cost_Basis)) + (Int32.Parse(stockToAddDTO.Qty)*float.Parse(stockToAddDTO.Cost_Basis))) / (Int32.Parse(existingStock.Qty) + Int32.Parse(stockToAddDTO.Qty));
                 existingStock.Cost_Basis = calcCostBasis.ToString();
                 existingStock.Qty = (Int32.Parse(existingStock.Qty) + Int32.Parse(stockToAddDTO.Qty)).ToString();
                 existingStock.Status = stockToAddDTO.Status;
                 var updatedStock = await _stockRepository.UpdateAsync(_mapper.Map<Stock>(existingStock));
-                Log.Information("Updated Stock: {@stockId}", updatedStock);
+                Log.Information("Updated existing stock for Buyer: {@stockId}", updatedStock);
                 return _mapper.Map<StockDTO>(updatedStock);
             }
         }

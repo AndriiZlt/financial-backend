@@ -22,6 +22,8 @@ public static class AutoMapperProfiles
             CreateMap<Transaction, TransactionToAddDTO>().ReverseMap();
             CreateMap<Transaction, TransactionDTO>().ReverseMap();
             CreateMap<StockToAddDTO, TransactionToAddDTO>().ReverseMap();
+            CreateMap<NotificationDTO, Notification>().ReverseMap();
+            CreateMap<NotificationToAddDTO, Notification>().ReverseMap();
         }
     }
 }
