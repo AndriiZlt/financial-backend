@@ -1,14 +1,11 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DAL.Entities;
-using aspnetcore.ntier.DAL.Repositories;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using System.Security.Claims;
 
 
 
@@ -46,7 +43,7 @@ namespace aspnetcore.ntier.BLL.Services
             {
                 var updatedStock = await _stockService.UpdateStatusAsync(addedItem.Stock_Id, boardItemToAdd.Status);
             }
-            Log.Information("Added item: {@item}", addedItem);
+            Log.Information("Added item: {@item}", _mapper.Map<BoardItemDTO>(addedItem));
             Log.Information("--- End Buy Order ---");
             return _mapper.Map<BoardItemDTO>(addedItem);
         }
@@ -63,9 +60,6 @@ namespace aspnetcore.ntier.BLL.Services
 
             await _boardRepository.DeleteAsync(itemToDelete);
         }
-
-
-
 
     }
 }

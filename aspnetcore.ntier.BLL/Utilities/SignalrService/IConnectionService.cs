@@ -1,5 +1,5 @@
 ﻿
-namespace aspnetcore.ntier.API
+namespace aspnetcore.ntier.BLL.Utilities
 {
     public interface IConnectionService
     {
@@ -10,3 +10,5 @@ namespace aspnetcore.ntier.API
         void setValue(string key, object value);
     }
 }
+
+
