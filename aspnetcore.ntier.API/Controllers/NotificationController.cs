@@ -1,4 +1,5 @@
 ﻿
+using aspnetcore.ntier.BLL;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,7 @@ namespace aspnetcore.ntier.API.Controllers
     {
 
         private readonly INotificationService _notificationService;
+
 
         public NotificationController(INotificationService notificationService)
         {
@@ -38,8 +40,8 @@ namespace aspnetcore.ntier.API.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in GetNotifications controller. {@ex}", ex.Message);
-                return BadRequest($"An unexpected error occurred in GetNotifications controller: {ex.Message}");
+                Log.Error("Error occurred in GetNotifications controller: {ex}", ex.Message);
+                return BadRequest($"Error occurred in GetNotifications controller: {ex.Message}");
             }
         }
 
@@ -47,17 +49,18 @@ namespace aspnetcore.ntier.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [HttpPut("readnotification")]
-        public async Task<IActionResult> AddNotification(NotificationToAddDTO notificationToAdd)
+        [HttpPut("readnotification/{notificationId}")]
+        public async Task<IActionResult> ReadNotification(string notificationId)
         {
             try
             {
-                return Ok(await _notificationService.AddNotificationAsync(notificationToAdd));
+                
+                return Ok(await _notificationService.ReadNotificationAsync(notificationId));
             }
             catch (Exception ex)
             {
-                Log.Error("An unexpected error occurred in AddTransaction controller. {@ex}", ex.Message);
-                return BadRequest($"An unexpected error occurred in AddNotification controller: {ex.Message}");
+                Log.Error("Error in ReadNotification controller: {ex}", ex.Message);
+                return BadRequest($"Error occurred in AddNotification controller: {ex.Message}");
             }
         }
 

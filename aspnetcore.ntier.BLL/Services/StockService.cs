@@ -1,8 +1,6 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
-using aspnetcore.ntier.BLL.Utilities.CustomExceptions;
 using aspnetcore.ntier.DAL.DataContext;
 using aspnetcore.ntier.DAL.Entities;
-using aspnetcore.ntier.DAL.Repositories;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;

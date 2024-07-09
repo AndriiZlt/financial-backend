@@ -14,6 +14,7 @@ namespace aspnetcore.ntier.DAL.Repositories
         {
             _aspNetCoreNTierDbContext = aspNetCoreNTierDbContext;
         }
+
         public async Task<List<Notification>> GetListAsync(int userId)
         {
             return await _aspNetCoreNTierDbContext.Set<Notification>().AsNoTracking().Where(t => t.User_Id == userId ).ToListAsync();

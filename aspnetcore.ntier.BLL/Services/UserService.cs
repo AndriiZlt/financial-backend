@@ -35,7 +35,6 @@ public class UserService : IUserService
     public async Task<UserDTO> GetUserAsync(CancellationToken cancellationToken = default)
     {
         var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        Log.Information("User with userId = {UserId} was requested", userId);
         var userToReturn = await _userRepository.GetAsync(x => x.Id == Int32.Parse(userId), cancellationToken);
 
         if (userToReturn is null)
@@ -56,7 +55,6 @@ public class UserService : IUserService
             Log.Information("User with userId = {UserId} was not found", userId);
             throw new UserNotFoundException();
         }
-        Log.Information("Ballance for User with id {UserId} = {@ballance}", userId, user.Ballance);
         return user.Ballance;
     }
 
@@ -71,7 +69,7 @@ public class UserService : IUserService
             Log.Information("User with userId = {UserId} was not found", userId);
             throw new UserNotFoundException();
         }
-        Log.Information("Ballance for User with id {UserId} = {@ballance}", userId, user.Ballance);
+        Log.Information("Get ballance for User {UserId} = {@ballance}", userId, user.Ballance);
         return user.Ballance;
     }
 

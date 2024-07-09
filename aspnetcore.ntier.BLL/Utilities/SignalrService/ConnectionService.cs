@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 
 
-namespace aspnetcore.ntier.API
+namespace aspnetcore.ntier.BLL.Utilities
 {
     public class ConnectionService : IConnectionService
     {
@@ -18,28 +18,27 @@ namespace aspnetcore.ntier.API
         public List<string> AddToCashe(string userId, string connectionId)
         {
             List<string> connectionList = _memoryCache.Get<List<string>>(userId);
-/*            Log.Information("Before adding: Connection for user {d}, List: {@s}", userId,connectionList);*/
             if (connectionList != null)
             {
                 if (connectionList.Find(x => x.Contains(connectionId)) != null)
                 {
-                    connectionList.Add("ConnectionService_" + connectionId);
+                    connectionList.Add("ConnectionService=" + connectionId);
                     setValue(userId, connectionList);
                     setValue(connectionId, userId);
-                } 
+                }
             }
             else
             {
                 var newValue = new List<string>
                 {
-                    "ConnectionService_" + connectionId
+                    "ConnectionService=" + connectionId
                 };
 
                 setValue(userId, newValue);
                 setValue(connectionId, userId);
             }
 
-            Log.Information("Connections for user {d}, List: {@s}", userId, _memoryCache.Get<List<string>>(userId));
+/*            Log.Information("Connections for user {d}, List: {@s}", userId, _memoryCache.Get<List<string>>(userId));*/
             connectionList = _memoryCache.Get<List<string>>(userId);
             return connectionList;
 
@@ -56,10 +55,12 @@ namespace aspnetcore.ntier.API
             _memoryCache.Set(key, value, options);
         }
 
-        public List<string> GetUserConnections(string userId)
+        public List<string> GetUserConnections(string key)
         {
 
-            List<string> userConnections = _memoryCache.Get<List<string>>(userId);
+            List<string> userConnections = _memoryCache.Get<List<string>>(key);
+
+            Log.Information("{user} connections: {@con}", key, userConnections);
 
             return userConnections;
         }
@@ -80,3 +81,6 @@ namespace aspnetcore.ntier.API
 
     }
 }
+
+
+

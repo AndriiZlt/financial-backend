@@ -1,6 +1,6 @@
 
-using aspnetcore.ntier.API;
 using aspnetcore.ntier.BLL;
+using aspnetcore.ntier.BLL.Utilities;
 using aspnetcore.ntier.BLL.Services;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DAL;
@@ -35,6 +35,7 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<IConnectionService, ConnectionService>();
 builder.Services.AddSignalR();
@@ -89,7 +90,7 @@ app.UseSwaggerUI(c =>
     }
 });
 
-app.MapHub<SignalRHub>("signal-hub");
+app.MapHub<NotificationHub>("signal-hub");
 
 app.Run();
 
