@@ -13,6 +13,7 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
     public DbSet<Stock> Stocks { get; set; }
     public DbSet<BoardItem> BoardItems { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<AlpacaTransaction> AlpacaTransactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -50,6 +51,12 @@ public class AspNetCoreNTierDbContext :IdentityDbContext<IdentityUser>
                  Ballance = "1000000",
              }
          );
+
+        modelBuilder.Entity<AlpacaTransaction>()
+            .HasOne(s => s.User)
+            .WithMany(t => t.AlpacaTransactions)
+            .HasForeignKey(t => t.User_Id)
+            .IsRequired();
 
         modelBuilder.Entity<Transaction>()
             .HasMany(t => t.Users)

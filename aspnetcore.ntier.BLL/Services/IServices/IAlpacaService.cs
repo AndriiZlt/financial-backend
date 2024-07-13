@@ -14,7 +14,7 @@ namespace aspnetcore.ntier.BLL.Services.IServices
         Task<List<AssetToReturn>> GetAssetsAsync(string keyId, string secretKey);
         Task<AssetToReturn> GetAssetAsync(string keyId, string secretKey, string assetId);
         Task<List<PositionToReturn>> GetPositionsAsync(string keyId, string secretKey);
-        Task<List<TransactionToReturn>> GetTransactionsAsync(string keyId, string secretKey);
+        Task<List<AlpacaTransactionDTO>> GetTransactionsAsync(string keyId, string secretKey);
         Task<BarMonthData> GetMonthBarsAsync(string keyId, string secretKey, string symbol);
         Task<AlpacaAccount> GetAccountAsync(string keyId, string secretKey);
         Task<List<OrderToReturn>> GetOrdersAsync(string keyId, string secretKey);

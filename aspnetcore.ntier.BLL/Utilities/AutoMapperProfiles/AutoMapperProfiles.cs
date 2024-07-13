@@ -24,6 +24,8 @@ public static class AutoMapperProfiles
             CreateMap<StockToAddDTO, TransactionToAddDTO>().ReverseMap();
             CreateMap<NotificationDTO, Notification>().ReverseMap();
             CreateMap<NotificationToAddDTO, Notification>().ReverseMap();
+            CreateMap<AlpacaTransactionToAdd, AlpacaTransaction>().ReverseMap();
+            CreateMap<AlpacaTransactionDTO, AlpacaTransaction>().ReverseMap();
         }
     }
 }
