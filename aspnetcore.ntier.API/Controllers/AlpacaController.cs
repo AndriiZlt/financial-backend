@@ -2,6 +2,7 @@
 using aspnetcore.ntier.DTO.DTOs;
 using aspnetcore.ntier.BLL.Services.IServices;
 using Serilog;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace aspnetcore.ntier.API.Controllers;
@@ -9,6 +10,7 @@ namespace aspnetcore.ntier.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1")]
 [ApiController]
+[Authorize(AuthenticationSchemes = "Bearer")]
 public class AlpacaController : ControllerBase
 {
     private readonly IAlpacaService _alpacaService;

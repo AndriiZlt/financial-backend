@@ -1,11 +1,15 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Text;
+using Serilog;
+using aspnetcore.ntier.DAL.Repositories.IRepositories;
+using System.Security.Claims;
+using aspnetcore.ntier.DAL.Repositories;
+using aspnetcore.ntier.DAL.Entities;
+using Microsoft.AspNetCore.Http;
+
 
 
 
@@ -16,15 +20,18 @@ namespace aspnetcore.ntier.BLL.Services
         private readonly IMapper _mapper;
         private readonly Uri tradingUri = new Uri("https://paper-api.alpaca.markets/v2/");
         private readonly Uri dataUri = new Uri("https://data.alpaca.markets/v2/"); 
-        public AlpacaService(IMapper mapper)
+        private readonly IAlpacaRepository _alpacaRepository;
+        private readonly INotificationService _notificationService;
+        private readonly IHttpContextAccessor _httpContext;
+
+        public AlpacaService(IMapper mapper, IAlpacaRepository alpacaRepository, IHttpContextAccessor httpContext, INotificationService notificationService)
         {
+            _alpacaRepository = alpacaRepository;
+            _httpContext = httpContext;
             _mapper = mapper;
+            _notificationService = notificationService;
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<List<AssetToReturn>> GetAssetsAsync(string keyId, string secretKey)
         {
             using (var client = new HttpClient())
@@ -43,10 +50,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<AssetToReturn> GetAssetAsync(string keyId, string secretKey, string assetId)
         {
             using (var client = new HttpClient())
@@ -65,10 +68,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<List<PositionToReturn>> GetPositionsAsync(string keyId, string secretKey)
         {
             using (var client = new HttpClient())
@@ -87,10 +86,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<PositionToReturn> ClosePositionAsync(string keyId, string secretKey, string asset_id)
         {
             using (var client = new HttpClient())
@@ -109,10 +104,7 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<List<TransactionToReturn>> GetTransactionsAsync(string keyId, string secretKey)
+        public async Task<List<AlpacaTransactionDTO>> GetTransactionsAsync(string keyId, string secretKey)
         {
             using (var client = new HttpClient())
             {
@@ -124,16 +116,34 @@ namespace aspnetcore.ntier.BLL.Services
                     throw new HttpRequestException($"HTTP request failed with status code {response.StatusCode}");
                 }
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var ConvertedResponse = JsonConvert.DeserializeObject<List<TransactionToReturn>>(jsonResponse);
+                var ConvertedResponse = JsonConvert.DeserializeObject<List<AlpacaTransactionDTO>>(jsonResponse);
+
+                this.NewTransactionsHandler(ConvertedResponse); 
+
                 return ConvertedResponse;
             }
 
         }
 
+        private async void NewTransactionsHandler(List<AlpacaTransactionDTO> alpacaTransactions)
+        {
+            
+            var userId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var existTransactions = await _alpacaRepository.GetListAsync(Int32.Parse(userId));
+            foreach (var transaction in alpacaTransactions)
+            {
+               var isExist = existTransactions.Find(tr=>tr.Id == transaction.Id);
+                if (isExist is null && transaction.Activity_type == "FILL")
+                {
+                    var transactionToAdd = _mapper.Map<AlpacaTransaction>(transaction);
+                    transactionToAdd.User_Id = Int32.Parse(userId);
+                    Log.Information("AlpacaTransaction to add: {@tr}", transactionToAdd);
+                    var newTransaction = await _alpacaRepository.AddAsync(transactionToAdd);
+                    _ = _notificationService.CreateNotificationsFromAlpacaTransaction(newTransaction);
+                }
+            }
+        } 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<BarMonthData> GetMonthBarsAsync(string keyId, string secretKey, string symbol)
         {
             using (var client = new HttpClient())
@@ -155,10 +165,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<BarToReturn> GetLastBarAsync(string keyId, string secretKey, string symbol)
         {
             using (var client = new HttpClient())
@@ -177,9 +183,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<AlpacaAccount> GetAccountAsync(string keyId, string secretKey)
         {
             using (var client = new HttpClient())
@@ -198,10 +201,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<List<OrderToReturn>> GetOrdersAsync(string keyId, string secretKey)
         {
             using (var client = new HttpClient())
@@ -220,10 +219,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<OrderToReturn> CreateOrdersAsync(string keyId, string secretKey, OrderDTO orderToCreate)
         {
             using (var client = new HttpClient())
@@ -244,10 +239,6 @@ namespace aspnetcore.ntier.BLL.Services
 
         }
 
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<TradeToReturn> GetTradesAsync(string keyId, string secretKey, string symbol)
         {
             using (var client = new HttpClient())

@@ -10,9 +10,7 @@ using Serilog;
 using System.Security.Claims;
 using aspnetcore.ntier.BLL.Utilities;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Caching.Memory;
-using aspnetcore.ntier.DAL.Repositories;
 
 
 
@@ -95,6 +93,26 @@ namespace aspnetcore.ntier.BLL.Services
             Log.Information("Buyer's notification created: {@not}", _mapper.Map<NotificationDTO>(buyerNot));
             return _mapper.Map<NotificationDTO>(buyerNot);
 
+        }
+
+        public async Task<NotificationDTO> CreateNotificationsFromAlpacaTransaction(AlpacaTransaction transaction)
+        {
+            NotificationToAddDTO notificationToAdd = new NotificationToAddDTO()
+            {
+                User_Id = transaction.User_Id,
+                Type = transaction.Side == "buy" 
+                      ? NotificationType.Alpaca_Buy_Transaction
+                      : NotificationType.Alpaca_Sell_Transaction,
+                Text = transaction.Side == "buy"
+                      ? $"Alpaca: You bought {transaction.Symbol} stock. Qty:{transaction.Qty}. Total price: ${transaction.Price}" 
+                      : $"Alpaca: You Sold {transaction.Symbol} stock. Qty:{transaction.Qty}. Total price: ${transaction.Price}"
+            };
+
+            var addedNotification = await _notificationRepository.AddAsync(_mapper.Map<Notification>(notificationToAdd));
+            SendNotificationsUpdate(transaction.User_Id.ToString());
+            var notificationToReturn = _mapper.Map<NotificationDTO>(addedNotification);
+            Log.Information("New Alpaca notification created: {@not}", notificationToReturn);
+            return notificationToReturn;
         }
 
         public async void SendNotificationsUpdate(string userId)

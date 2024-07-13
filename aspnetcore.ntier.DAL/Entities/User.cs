@@ -15,5 +15,6 @@ public class User : IdentityUser<int>
     public ICollection<BoardItem> BoardItems { get; set; }
     public ICollection<Transaction> Transactions { get; set; }
     public ICollection<Notification> Notifications { get; set; }
+    public ICollection<AlpacaTransaction> AlpacaTransactions { get; set; }
 
 }         

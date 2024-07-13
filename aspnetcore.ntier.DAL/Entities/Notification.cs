@@ -34,6 +34,8 @@ namespace aspnetcore.ntier.DAL.Entities
         Sell_Transaction = 2,
         Buy_Transaction = 3,
         Message = 4,
+        Alpaca_Sell_Transaction= 5,
+        Alpaca_Buy_Transaction= 6,
     }
 
 }
