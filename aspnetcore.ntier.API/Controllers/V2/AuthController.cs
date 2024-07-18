@@ -1,6 +1,7 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Utilities.CustomExceptions;
 using aspnetcore.ntier.DTO.DTOs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -52,4 +53,5 @@ public class AuthController : ControllerBase
             return BadRequest("Something went wrong");
         }
     }
+
 }
