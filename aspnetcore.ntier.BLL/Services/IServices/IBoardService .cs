@@ -11,7 +11,5 @@ public interface IBoardService
 
     Task DeleteBoardItemAsync(int stock_Id);
 
-/*    Task<SubtaskDTO> UpdateStatusSubtaskAsync(int taskId);
-
-    Task<SubtaskDTO> UpdateSubtaskAsync(SubtaskDTO taskToUpdate);*/
+    Task UpdateFrontent(int userId);
 }

@@ -1,5 +1,4 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
-using aspnetcore.ntier.DAL.DataContext;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
@@ -8,9 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Security.Claims;
-using aspnetcore.ntier.BLL.Utilities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using aspnetcore.ntier.BLL.Utilities;
 
 
 
@@ -22,10 +21,7 @@ namespace aspnetcore.ntier.BLL.Services
         private readonly INotificationRepository _notificationRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
-        private readonly AspNetCoreNTierDbContext _aspNetCoreNTierDbContext;
         private readonly IHubContext<NotificationHub> _hubContext;
-        private readonly IConnectionService _connectionService;
-/*        private readonly IApplicationBuilder app;*/
         private readonly IMemoryCache _memoryCache;
         private readonly IGenericRepository<Notification> _genericRepository;
 
@@ -33,9 +29,7 @@ namespace aspnetcore.ntier.BLL.Services
             INotificationRepository notificationRepository,
             IMapper mapper,
             IHttpContextAccessor httpContext,
-            AspNetCoreNTierDbContext aspNetCoreNTierDbContext,
             IHubContext<NotificationHub> hubContext,
-            IConnectionService connectionService,
             IMemoryCache memoryCache,
             IGenericRepository<Notification> genericRepository
             )
@@ -43,9 +37,7 @@ namespace aspnetcore.ntier.BLL.Services
             _notificationRepository = notificationRepository;
             _mapper = mapper;
             _httpContext = httpContext;
-            _aspNetCoreNTierDbContext = aspNetCoreNTierDbContext;
             _hubContext = hubContext;
-            _connectionService = connectionService;
             _memoryCache = memoryCache;
             _genericRepository = genericRepository;
         }
@@ -115,12 +107,14 @@ namespace aspnetcore.ntier.BLL.Services
             return notificationToReturn;
         }
 
-        public async void SendNotificationsUpdate(string userId)
+        public async Task SendNotificationsUpdate(string userId)
         {
             var key = $"UserId_{userId}";
 
             List<string> userConnections = _memoryCache.Get<List<string>>(key);
+
             Log.Information("{key} Connections : {@id}", key, userConnections);
+
             if (userConnections != null)
             {
                 foreach (var connection in userConnections)
@@ -128,10 +122,8 @@ namespace aspnetcore.ntier.BLL.Services
                     string connectionId = connection.Split('=')[1];
                     Log.Information("NotificationHub NewNotification: {id}", connectionId);
                     await _hubContext.Clients.Client(connectionId).SendAsync("NewNotification", "Update notifications");
-
                 }
             }
-
         }
 
         public async Task<NotificationDTO> ReadNotificationAsync(string notificationId, CancellationToken cancellationToken = default)

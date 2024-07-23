@@ -11,6 +11,6 @@ namespace aspnetcore.ntier.BLL.Services.IServices
         Task<NotificationDTO> CreateNotificationsFromTransaction(DAL.Entities.Transaction transaction);
         Task<NotificationDTO> CreateNotificationsFromAlpacaTransaction(AlpacaTransaction transaction);
         Task<NotificationDTO> ReadNotificationAsync(string notificationId, CancellationToken cancellationToken = default);
-        void SendNotificationsUpdate(string userId);
+        Task SendNotificationsUpdate(string userId);
     }
 }

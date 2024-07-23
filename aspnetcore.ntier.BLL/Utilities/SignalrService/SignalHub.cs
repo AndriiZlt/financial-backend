@@ -1,9 +1,5 @@
-﻿
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using Serilog;
-
-
-
 
 namespace aspnetcore.ntier.BLL.Utilities
 {
@@ -40,23 +36,6 @@ namespace aspnetcore.ntier.BLL.Utilities
 
         }
 
-/*        public async Task Register(string userId)
-        {
-            Log.Information("STRING Registered userId: {response}", userId);
-            var currentConnectionId = Context.ConnectionId;
-            var key = $"UserId_{userId}";
-            try
-            {
-                List<string> updatedUserConnections = _connectionService.AddToCashe(key, currentConnectionId);
-                Log.Information("Registered User {userId} with connections: {@response}", userId, updatedUserConnections);
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Error occurred in SignalRHub Register function. {@ex}", ex.Message);
-            }
-
-        }*/
-
         public async Task Register(int userId)
         {
             var currentConnectionId = Context.ConnectionId;
@@ -78,6 +57,12 @@ namespace aspnetcore.ntier.BLL.Utilities
         {
             Log.Information("Send notification to: {connection}", connectionId);
             await Clients.Client(connectionId).SendAsync("New_Notification", "Update notifications");
+        }
+
+        public async Task SendPublicBoardUpdate(string connectionId)
+        {
+            Log.Information("SignalR Public Board update: {connection}", connectionId);
+            await Clients.Client(connectionId).SendAsync("PublicBoard", "Update public board");
         }
 
     }

@@ -13,9 +13,6 @@ namespace aspnetcore.ntier.DAL.Repositories.IRepositories
 
         Task<int> DeleteAsync(BoardItem stock);
 
-/*        Task<Subtask> UpdateStatusTaskAsync(Subtask task);
-
-        Task<Subtask> UpdateTaskAsync(Subtask task);*/
 
     }
 }

@@ -4,7 +4,6 @@ using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,6 +17,7 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
+
     public AuthService(
         IUserRepository userRepository,
         IMapper mapper,
@@ -56,6 +56,7 @@ public class AuthService : IAuthService
 
         return userToReturn;
     }
+
 
     private string GenerateToken(int userId, string username)
     {

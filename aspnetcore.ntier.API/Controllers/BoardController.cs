@@ -1,5 +1,6 @@
 ﻿
 using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -61,8 +62,25 @@ namespace aspnetcore.ntier.API.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [HttpDelete("deleteboard/{boardItemId}")]
+        public async Task<IActionResult> DeleteBoardItem(string boardItemId)
+        {
+            try
+            {
+                await _boardService.DeleteBoardItemAsync(Int32.Parse(boardItemId));
+                Log.Information("BoardItem with Id {UserId} was deleted", boardItemId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error in CancelOrder controller: {ex}", ex.Message);
+                return BadRequest($"Error in CancelOrder controller: {ex.Message}" );
+            }
+        }
 
-       
 
     }
 }
