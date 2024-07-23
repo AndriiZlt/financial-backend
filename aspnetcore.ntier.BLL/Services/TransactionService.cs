@@ -81,7 +81,7 @@ namespace aspnetcore.ntier.BLL.Services
                 Log.Information("Buyer's ballance Ok: {@ballance}", buyerBallance);
             }
 
-            /* Check seller's stock and quantity */
+            /* Checking seller's stock and quantity */
             var sellerStocks = await _stockService.GetStocksAsync(transactionFrontend.Seller_User_Id);
             var stockForSale = sellerStocks.FirstOrDefault(s=>s.Symbol == transactionFrontend.Symbol);
             if (stockForSale != null)

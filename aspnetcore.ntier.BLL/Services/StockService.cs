@@ -108,7 +108,6 @@ namespace aspnetcore.ntier.BLL.Services
                /*Skip adding empty stock if exists */
                 Log.Information("Stock exists (skip adding): {@stockId}", existingStock);
                 return _mapper.Map<StockDTO>(existingStock);
-
             }
         }
 
